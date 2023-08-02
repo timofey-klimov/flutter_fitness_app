@@ -18,9 +18,6 @@ class WeightExercise extends Exercise {
   }
 
   @override
-  List<ActivityTypes> get activities => [ActivityTypes.weightApproach];
-
-  @override
   Map<String, dynamic> toMap() {
     return {
       'id': id,

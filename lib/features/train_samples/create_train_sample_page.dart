@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:app/features/train_samples/train_samples_state.dart';
+import 'package:app/domain/services/train_samples_state.dart';
 
 import '../../domain/exercises/exercise.dart';
 import '../../domain/services/create_exercise_service.dart';
+import '../../domain/services/exercise_widgets/exercise_card.dart';
 import '../../shared/color.dart';
 
 class ListState {
@@ -70,7 +71,6 @@ class _CreateTrainSamplePageState extends State<CreateTrainSamplePage> {
             Consumer(
               builder: (ctx, ref, child) {
                 final state = ref.watch(trainSampleStateProvider);
-                final drawerService = ref.read(createExerciseServiceProvider);
                 final notifier = ref.read(trainSampleStateProvider.notifier);
                 if (_listState.isNewElement == true) {
                   _key.currentState!.insertItem(state.exercisesState.length - 1,
@@ -92,13 +92,14 @@ class _CreateTrainSamplePageState extends State<CreateTrainSamplePage> {
                       _listState = _listState.mark();
                       return SizeTransition(
                         sizeFactor: animation,
-                        child: drawerService.drawForm(item.type, item.index,
-                            (index) {
-                          setState(() {
-                            _listState = _listState.removeItem(index);
-                          });
-                          notifier.removeItem(index);
-                        }),
+                        child: CreateExerciseCard(
+                            state: item,
+                            onRemove: (index) {
+                              setState(() {
+                                _listState = _listState.removeItem(index);
+                              });
+                              notifier.removeItem(index);
+                            }),
                       );
                     },
                   ),

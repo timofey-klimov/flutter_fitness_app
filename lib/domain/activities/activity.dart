@@ -1,28 +1,8 @@
 import 'package:app/domain/activities/approach_activities.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../services/create_activity_service.dart';
 
 enum ActivityTypes { weightApproach, approach, total, timer }
-
-ActivityTypes createActivityTypesFromString(String value) {
-  for (var el in ActivityTypes.values) {
-    if (el.toString() == value) {
-      return el;
-    }
-  }
-  throw new Error();
-}
-
-class ActivityTypesMapper {
-  Map<ActivityTypes, String> map() {
-    return {
-      ActivityTypes.approach: 'Подходы',
-      ActivityTypes.total: 'Общее количество',
-      ActivityTypes.timer: 'Таймер'
-    };
-  }
-}
-
-final activityTypesMapperProvider = Provider((ref) => ActivityTypesMapper());
 
 abstract class Activity {
   static String entityKey = 'activity';
