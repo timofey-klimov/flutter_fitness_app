@@ -1,8 +1,10 @@
-import 'package:app/domain/activities/activity.dart';
-import 'package:app/domain/services/train_samples_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:app/domain/activities/activity.dart';
+import 'package:app/domain/services/train_samples_state.dart';
+
 import '../../../shared/color.dart';
 import '../../../shared/components/colored_button.dart';
 import '../../exercises/exercise.dart';
@@ -10,49 +12,97 @@ import '../create_activity_service.dart';
 import '../exercise_activity_mapper.dart';
 import '../slidable_card.dart';
 
-class CreateExerciseCard extends StatelessWidget {
+class CardState {
+  final int index;
+  final ExerciseTypes exerciseType;
+  ActivityTypes? activityType;
+  String? name;
+  CardState({
+    required this.index,
+    required this.exerciseType,
+    this.activityType,
+    this.name,
+  });
+
+  CardState copyWith({
+    int? index,
+    ExerciseTypes? exerciseType,
+    ActivityTypes? activityType,
+    String? name,
+  }) {
+    return CardState(
+      index: index ?? this.index,
+      exerciseType: exerciseType ?? this.exerciseType,
+      activityType: activityType ?? this.activityType,
+      name: name ?? this.name,
+    );
+  }
+}
+
+class CreateExerciseCard extends StatefulWidget {
   const CreateExerciseCard(
       {super.key,
-      required ExerciseState state,
+      required int index,
+      required ExerciseTypes exerciseType,
       required void Function(int index) onRemove})
       : _onRemove = onRemove,
-        _state = state;
+        _index = index,
+        _exerciseType = exerciseType;
 
   final Function(int index) _onRemove;
-  final ExerciseState _state;
-  final String? name = null;
+  final int _index;
+  final ExerciseTypes _exerciseType;
+
+  @override
+  State<CreateExerciseCard> createState() => _CreateExerciseCardState();
+}
+
+class _CreateExerciseCardState extends State<CreateExerciseCard> {
+  late CardState state;
+  @override
+  void initState() {
+    state = CardState(exerciseType: widget._exerciseType, index: widget._index);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return SlidableCard(
-      onRemove: _onRemove,
-      index: _state.index,
+      onRemove: widget._onRemove,
+      index: widget._index,
       card: EditExerciseCard(
-        state: _state,
+        state: state,
+        updateState: (state) {
+          setState(() {
+            this.state = state;
+          });
+        },
       ),
     );
   }
 }
 
 class EditExerciseCard extends StatelessWidget {
-  final ExerciseState _state;
-  const EditExerciseCard({super.key, required ExerciseState state})
-      : _state = state;
+  final CardState state;
+  final void Function(CardState state) updateState;
+  const EditExerciseCard(
+      {super.key, required this.state, required this.updateState});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(15),
+      padding: const EdgeInsets.all(15),
       child: Card(
         shadowColor: AppColors.linearBgEnd,
         color: AppColors.linearBgEnd,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           child: Flex(
             direction: Axis.vertical,
             children: [
               ExerciseHeaderWidget(
-                state: _state,
+                state: state,
+                updateState: updateState,
               ),
               Align(
                 alignment: Alignment.centerLeft,
@@ -60,9 +110,9 @@ class EditExerciseCard extends StatelessWidget {
                   final drawer = ref.read(activityDrawerProvider);
                   return AnimatedSwitcher(
                     duration: Duration(milliseconds: 1000),
-                    child: _state.activityType == null
+                    child: state.activityType == null
                         ? Container()
-                        : drawer.drawActivity(_state.activityType!),
+                        : drawer.drawActivity(state.activityType!),
                   );
                 }),
               ),
@@ -99,9 +149,10 @@ class SubmitExerciseButton extends StatelessWidget {
 }
 
 class ExerciseHeaderWidget extends StatelessWidget {
-  final ExerciseState _state;
-  const ExerciseHeaderWidget({super.key, required ExerciseState state})
-      : _state = state;
+  final CardState state;
+  void Function(CardState state) updateState;
+  ExerciseHeaderWidget(
+      {super.key, required this.state, required this.updateState});
 
   @override
   Widget build(BuildContext context) {
@@ -117,9 +168,10 @@ class ExerciseHeaderWidget extends StatelessWidget {
               builder: (context, ref, child) {
                 final notifier = ref.read(trainSampleStateProvider.notifier);
                 return TextFormField(
-                  initialValue: _state.name,
+                  initialValue: state.name,
                   onFieldSubmitted: (value) {
-                    notifier.updateExerciseName(value, _state.index);
+                    updateState(state.copyWith(name: value));
+                    notifier.updateExerciseName(value, state.index);
                   },
                   inputFormatters: [LengthLimitingTextInputFormatter(25)],
                   style: const TextStyle(
@@ -142,12 +194,13 @@ class ExerciseHeaderWidget extends StatelessWidget {
             return IconButton(
               onPressed: () async {
                 final result = await chooseActivityType(
-                    context, exerciseActivityNamesMapper, _state.exerciseType);
+                    context, exerciseActivityNamesMapper, state.exerciseType);
                 if (result != null) {
-                  notifier.updateActivityType(result!, _state.index);
+                  updateState(state.copyWith(activityType: result));
+                  notifier.updateActivityType(result!, state.index);
                 }
               },
-              icon: Icon(Icons.add),
+              icon: const Icon(Icons.add),
             );
           })
         ],

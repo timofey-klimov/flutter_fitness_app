@@ -93,7 +93,8 @@ class _CreateTrainSamplePageState extends State<CreateTrainSamplePage> {
                       return SizeTransition(
                         sizeFactor: animation,
                         child: CreateExerciseCard(
-                            state: item,
+                            index: item.index,
+                            exerciseType: item.exerciseType,
                             onRemove: (index) {
                               setState(() {
                                 _listState = _listState.removeItem(index);
