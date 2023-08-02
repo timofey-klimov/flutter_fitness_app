@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 enum ExerciseTypes { weight, selfWeight, cardio, stretch }
 
 abstract class Exercise {
-  static String key = '';
+  static String execricseTypeKey = 'exercise_type';
   final int? id;
   final String name;
   final Activity activity;

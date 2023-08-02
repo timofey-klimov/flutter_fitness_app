@@ -27,7 +27,7 @@ class WeightExercise extends Exercise {
       'index': index,
       'name': name,
       Activity.entityKey: activity.toMap(),
-      Exercise.key: type.toString()
+      Exercise.execricseTypeKey: type.toString()
     };
   }
 }
