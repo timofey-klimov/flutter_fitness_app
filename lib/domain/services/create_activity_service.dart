@@ -1,3 +1,4 @@
+import 'package:app/domain/activities/approach_activities.dart';
 import 'package:app/domain/services/activity_widgets/weight_approach_activity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,11 +31,17 @@ ActivityTypes createActivityTypesFromString(String value) {
 }
 
 class CreateActivityService {
-  Widget drawActivity(ActivityTypes activityType) {
+  Widget drawActivity(
+      ActivityTypes activityType, int index, Activity? activityModel) {
     Widget activity;
     switch (activityType) {
       case ActivityTypes.weightApproach:
-        activity = WeightApproachActivity();
+        activity = WeightApproachActivityWdiget(
+          exerciseIndex: index,
+          activity: activityModel == null
+              ? null
+              : activityModel as WeightApproachActivity,
+        );
         break;
       default:
         throw new Error();

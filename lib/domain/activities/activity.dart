@@ -13,6 +13,7 @@ abstract class Activity {
   });
 
   Map<String, dynamic> toMap();
+  bool validate();
 }
 
 class ActivityFactory {

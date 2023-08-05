@@ -1,35 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:app/domain/services/train_samples_state.dart';
-
 import '../../domain/exercises/exercise.dart';
 import '../../domain/services/create_exercise_service.dart';
 import '../../domain/services/exercise_widgets/exercise_card.dart';
 import '../../shared/color.dart';
-
-class ListState {
-  int count;
-  bool? isNewElement;
-  bool? isRemoving;
-  int? removedIndex;
-
-  ListState(
-      {required this.count,
-      this.isNewElement,
-      this.isRemoving,
-      this.removedIndex});
-
-  factory ListState.initial() => ListState(count: 0, isNewElement: false);
-
-  ListState removeItem(int index) =>
-      ListState(count: --count, isRemoving: true, removedIndex: index);
-  ListState addNewItem() => ListState(count: ++count, isNewElement: true);
-
-  ListState mark() => ListState(
-      count: count, isNewElement: false, isRemoving: false, removedIndex: null);
-}
+import '../../shared/model/list_state.dart';
 
 class CreateTrainSamplePage extends StatefulWidget {
   const CreateTrainSamplePage({super.key});
@@ -77,12 +54,18 @@ class _CreateTrainSamplePageState extends State<CreateTrainSamplePage> {
                       duration: const Duration(milliseconds: 300));
                 }
                 if (_listState.isRemoving == true) {
-                  _key.currentState!.removeItem(_listState.removedIndex! - 1,
-                      (context, animation) => Container());
-                  if (_listState.removedIndex! - 1 == 0) {
+                  _key.currentState!.removeItem(
+                      _listState.removedIndex!,
+                      (context, animation) => SizeTransition(
+                            sizeFactor: animation,
+                            child: _listState.removeWidget!,
+                          ));
+                  if (_listState.removedIndex! == 0) {
                     _listState = _listState.mark();
                   }
                 }
+                final isSomeNotSubmitting =
+                    state.exercisesState.any((item) => !item.isSubmitting);
                 return Expanded(
                   child: AnimatedList(
                     key: _key,
@@ -93,11 +76,12 @@ class _CreateTrainSamplePageState extends State<CreateTrainSamplePage> {
                       return SizeTransition(
                         sizeFactor: animation,
                         child: CreateExerciseCard(
-                            index: item.index,
-                            exerciseType: item.exerciseType,
-                            onRemove: (index) {
+                            enableEditing: !isSomeNotSubmitting,
+                            state: item,
+                            onRemove: (index, widget) {
                               setState(() {
-                                _listState = _listState.removeItem(index);
+                                _listState =
+                                    _listState.removeItem(index, widget);
                               });
                               notifier.removeItem(index);
                             }),
@@ -127,7 +111,7 @@ class CreateTrainHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60,
+      height: 70,
       width: double.infinity,
       color: AppColors.main,
       child: Row(
@@ -173,13 +157,13 @@ class ExerciseNameWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 300,
+      width: MediaQuery.of(context).size.width * 0.6,
       child: TextFormField(
-        inputFormatters: [LengthLimitingTextInputFormatter(25)],
+        inputFormatters: [LengthLimitingTextInputFormatter(20)],
         style: TextStyle(
             decorationThickness: 0,
             color: AppColors.white,
-            fontSize: 18,
+            fontSize: 20,
             overflow: TextOverflow.ellipsis),
         textAlign: TextAlign.center,
         cursorColor: AppColors.white,
@@ -187,7 +171,7 @@ class ExerciseNameWidget extends StatelessWidget {
             border: InputBorder.none,
             hintText: 'Название тренировки',
             hintStyle: TextStyle(
-                color: AppColors.white.withOpacity(0.7), fontSize: 18)),
+                color: AppColors.white.withOpacity(0.7), fontSize: 20)),
         controller: _textFormFieldController,
       ),
     );
@@ -206,52 +190,58 @@ class AddNewExerciseWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (ctx, ref, child) {
+        final state = ref.watch(trainSampleStateProvider);
+        final isDisabled =
+            state.exercisesState.any((item) => item.isFormEditing);
         return IconButton(
-          onPressed: () async {
-            final result = await showModalBottomSheet<ExerciseTypes>(
-                context: ctx,
-                builder: (context) {
-                  return Consumer(
-                    builder: (ctx, ref, child) {
-                      final provider = ref.read(exerciseMapperProvider);
-                      final exerciseMap = provider.map();
-                      final list = <PopupMenuItem<ExerciseTypes>>[];
-                      exerciseMap.forEach(
-                        (key, value) {
-                          list.add(
-                            PopupMenuItem<ExerciseTypes>(
-                              value: key,
-                              child: Center(
-                                child: Text(
-                                  value,
-                                  style: const TextStyle(fontSize: 18),
-                                ),
+          onPressed: isDisabled
+              ? null
+              : () async {
+                  final result = await showModalBottomSheet<ExerciseTypes>(
+                      context: ctx,
+                      builder: (context) {
+                        return Consumer(
+                          builder: (ctx, ref, child) {
+                            final provider = ref.read(exerciseMapperProvider);
+                            final exerciseMap = provider.map();
+                            final list = <PopupMenuItem<ExerciseTypes>>[];
+                            exerciseMap.forEach(
+                              (key, value) {
+                                list.add(
+                                  PopupMenuItem<ExerciseTypes>(
+                                    value: key,
+                                    child: Center(
+                                      child: Text(
+                                        value,
+                                        style: const TextStyle(fontSize: 18),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                            return SizedBox(
+                              height: list.length * 70,
+                              width: double.infinity,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [...list],
                               ),
-                            ),
-                          );
-                        },
-                      );
-                      return SizedBox(
-                        height: 300,
-                        width: double.infinity,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [...list],
-                        ),
-                      );
-                    },
-                  );
-                });
-            if (result != null) {
-              _onAdd();
-              ref
-                  .read(trainSampleStateProvider.notifier)
-                  .addNewExercise(result);
-            }
-          },
+                            );
+                          },
+                        );
+                      });
+                  if (result != null) {
+                    _onAdd();
+                    ref
+                        .read(trainSampleStateProvider.notifier)
+                        .addNewExercise(result);
+                  }
+                },
           icon: Icon(
             Icons.add,
-            color: AppColors.white,
+            color:
+                isDisabled ? AppColors.white.withOpacity(.5) : AppColors.white,
           ),
         );
       },

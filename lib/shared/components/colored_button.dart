@@ -8,12 +8,14 @@ class ColoredButton extends StatelessWidget {
   final String text;
   final double width;
   final double height;
+  final bool? isDisabled;
   ColoredButton(
       {this.buttonColor,
       this.textColor,
       required this.width,
       required this.height,
       required this.onpressed,
+      this.isDisabled,
       required String this.text}) {
     buttonColor = buttonColor ?? AppColors.main;
     textColor = textColor ?? AppColors.white;
@@ -25,11 +27,13 @@ class ColoredButton extends StatelessWidget {
       width: width,
       height: height,
       child: TextButton(
-        onPressed: onpressed,
+        onPressed: isDisabled == true ? null : onpressed,
         child: Text(text),
         style: TextButton.styleFrom(
-            foregroundColor: textColor,
-            backgroundColor: buttonColor,
+            foregroundColor:
+                isDisabled == true ? textColor!.withOpacity(.5) : textColor,
+            backgroundColor:
+                isDisabled == true ? buttonColor!.withOpacity(.5) : buttonColor,
             elevation: 10,
             textStyle: TextStyle(color: AppColors.white, fontSize: 20)),
       ),

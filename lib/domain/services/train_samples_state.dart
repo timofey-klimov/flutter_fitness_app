@@ -6,15 +6,19 @@ import 'package:app/domain/exercises/exercise.dart';
 
 class ExerciseState extends Equatable {
   int index;
-  String? name;
+  final String? name;
   final ExerciseTypes exerciseType;
   final bool isFormEditing;
+  final bool isDeleting;
+  final bool isSubmitting;
   final Activity? activity;
   final ActivityTypes? activityType;
   ExerciseState(
       {required this.index,
       required this.exerciseType,
       required this.isFormEditing,
+      required this.isDeleting,
+      required this.isSubmitting,
       this.name,
       this.activity,
       this.activityType});
@@ -22,17 +26,27 @@ class ExerciseState extends Equatable {
   @override
   List<Object?> get props => [index];
 
+  bool validate() {
+    var result = (name?.isNotEmpty == true) &&
+        (activity != null && activity!.validate());
+    return result;
+  }
+
   ExerciseState copyWith(
       {int? index,
       ExerciseTypes? exerciseType,
       Exercise? exercise,
       bool? isFormEditing,
+      bool? isDeleting,
+      bool? isSubmitting,
       Activity? activity,
       ActivityTypes? activityType,
       String? name}) {
     return ExerciseState(
         index: index ?? this.index,
         exerciseType: exerciseType ?? this.exerciseType,
+        isDeleting: isDeleting ?? this.isDeleting,
+        isSubmitting: isSubmitting ?? this.isSubmitting,
         isFormEditing: isFormEditing ?? this.isFormEditing,
         activity: activity ?? this.activity,
         name: name ?? this.name,
@@ -45,7 +59,6 @@ class TrainSampleState extends Equatable {
   TrainSampleState({required this.exercisesState});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [exercisesState];
 }
 
@@ -55,8 +68,10 @@ class TrainSampleStateNotifier extends StateNotifier<TrainSampleState> {
   int addNewExercise(ExerciseTypes type) {
     var currentExercises = state.exercisesState;
     currentExercises.add(ExerciseState(
+        isSubmitting: false,
+        isDeleting: false,
         exerciseType: type,
-        index: currentExercises.length + 1,
+        index: currentExercises.length,
         isFormEditing: true));
     state = TrainSampleState(exercisesState: currentExercises);
     return currentExercises.length;
@@ -64,7 +79,7 @@ class TrainSampleStateNotifier extends StateNotifier<TrainSampleState> {
 
   void removeItem(int index) {
     var currentExercises = state.exercisesState;
-    currentExercises.removeAt(index - 1);
+    currentExercises.removeAt(index);
     currentExercises = currentExercises.map((item) {
       if (item.index > index) {
         return item.copyWith(index: --item.index);
@@ -78,11 +93,23 @@ class TrainSampleStateNotifier extends StateNotifier<TrainSampleState> {
     var exercises = state.exercisesState.map(
       (item) {
         if (item.index == index) {
-          return item.copyWith(activityType: activityType);
+          return item.copyWith(
+            activityType: activityType,
+          );
         }
         return item;
       },
     ).toList();
+    state = TrainSampleState(exercisesState: exercises);
+  }
+
+  void updateActivity(int index, Activity activity) {
+    var exercises = state.exercisesState.map((item) {
+      if (item.index == index) {
+        return item.copyWith(activity: activity);
+      }
+      return item;
+    }).toList();
     state = TrainSampleState(exercisesState: exercises);
   }
 
@@ -95,6 +122,37 @@ class TrainSampleStateNotifier extends StateNotifier<TrainSampleState> {
         return item;
       },
     ).toList();
+    state = TrainSampleState(exercisesState: exercises);
+  }
+
+  void markExerciseEditing(int index) {
+    var exercises = state.exercisesState.map((e) {
+      if (e.index == index) {
+        return e.copyWith(isFormEditing: true);
+      }
+      return e.copyWith(isFormEditing: false);
+    }).toList();
+    state = TrainSampleState(exercisesState: exercises);
+  }
+
+  void save(int index) {
+    var exercises = state.exercisesState.map((item) {
+      if (item.index == index) {
+        return item.copyWith(isFormEditing: false, isSubmitting: true);
+      }
+      return item;
+    }).toList();
+    state = TrainSampleState(exercisesState: exercises);
+  }
+
+  void updateDeleting(int index, bool isDeleting) {
+    var exercises = state.exercisesState.map((item) {
+      if (item.index == index) {
+        return item.copyWith(isDeleting: isDeleting);
+      }
+      return item;
+    }).toList();
+
     state = TrainSampleState(exercisesState: exercises);
   }
 }

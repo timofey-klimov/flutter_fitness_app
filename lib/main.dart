@@ -43,12 +43,7 @@ class MyApp extends StatelessWidget {
               }
             },
           );
-          return Container(
-            color: AppColors.background,
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+          return Container();
         },
       ),
     );

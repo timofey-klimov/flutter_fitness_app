@@ -7,4 +7,5 @@ class AppColors {
   static Color white = const Color(0xFFFFFFFF);
   static Color linearBgStart = const Color.fromRGBO(246, 251, 255, 1);
   static Color linearBgEnd = const Color.fromRGBO(225, 240, 255, 1);
+  static Color lightRed = Color.fromRGBO(255, 228, 232, 1);
 }

@@ -4,7 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 class SlidableCard extends StatelessWidget {
   const SlidableCard(
       {super.key,
-      required Function(int index) onRemove,
+      required void Function(int index) onRemove,
       required int index,
       required Widget card})
       : _onRemove = onRemove,
@@ -23,12 +23,12 @@ class SlidableCard extends StatelessWidget {
         dismissible: DismissiblePane(onDismissed: () {
           _onRemove(_index);
         }),
-        extentRatio: .4,
+        extentRatio: .2,
         motion: const StretchMotion(),
         children: [
           SlidableAction(
             onPressed: (ctx) {},
-            backgroundColor: Color(0xFFFE4A49),
+            backgroundColor: const Color(0xFFFE4A49),
             foregroundColor: Colors.white,
             icon: Icons.delete,
             label: 'Удалить',
