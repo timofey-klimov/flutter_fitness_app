@@ -1,4 +1,5 @@
 import 'package:app/domain/exercises/exercise.dart';
+import 'package:app/domain/exercises/weight_exercise.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ExerciseMapper {
@@ -13,3 +14,26 @@ class ExerciseMapper {
 }
 
 final exerciseMapperProvider = Provider((ref) => ExerciseMapper());
+
+class ExerciseFactory {
+  static Exercise createExercise(Map<String, dynamic> map) {
+    final typeString = map[Exercise.execricseTypeKey];
+    final type = createType(typeString);
+
+    switch (type) {
+      case ExerciseTypes.weight:
+        return WeightExercise.fromMap(map);
+      default:
+        throw new Error();
+    }
+  }
+
+  static createType(String type) {
+    for (var value in ExerciseTypes.values) {
+      if (value.toString() == type) {
+        return value;
+      }
+    }
+    throw new Error();
+  }
+}
