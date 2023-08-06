@@ -1,5 +1,6 @@
 import 'package:app/domain/exercises/exercise.dart';
 import 'package:app/domain/exercises/weight_exercise.dart';
+import 'package:app/domain/services/train_samples_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ExerciseMapper {
@@ -25,6 +26,16 @@ class ExerciseFactory {
         return WeightExercise.fromMap(map);
       default:
         throw new Error();
+    }
+  }
+
+  static Exercise createExerciseFromState(ExerciseState state) {
+    switch (state.exerciseType) {
+      case ExerciseTypes.weight:
+        return WeightExercise(
+            activity: state.activity!, index: state.index, name: state.name!);
+      default:
+        throw Error();
     }
   }
 

@@ -5,13 +5,14 @@ String sample
 
 **train_schedules**
 String sample_id
+String uuid
 String schedule_type
 
 **train_calendares**
 String id
 String uuid;
 String sample_id
-Date planned_train_date
+Date train_date
 
 **trains**
 String id

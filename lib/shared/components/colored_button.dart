@@ -9,12 +9,14 @@ class ColoredButton extends StatelessWidget {
   final double width;
   final double height;
   final bool? isDisabled;
+  final double? fontSize;
   ColoredButton(
       {this.buttonColor,
       this.textColor,
       required this.width,
       required this.height,
       required this.onpressed,
+      this.fontSize,
       this.isDisabled,
       required String this.text}) {
     buttonColor = buttonColor ?? AppColors.main;
@@ -35,7 +37,8 @@ class ColoredButton extends StatelessWidget {
             backgroundColor:
                 isDisabled == true ? buttonColor!.withOpacity(.5) : buttonColor,
             elevation: 10,
-            textStyle: TextStyle(color: AppColors.white, fontSize: 20)),
+            textStyle:
+                TextStyle(color: AppColors.white, fontSize: fontSize ?? 20)),
       ),
     );
   }

@@ -1,6 +1,5 @@
 import 'package:app/shared/color.dart';
 import 'package:flutter/material.dart';
-import 'create_train_sample_page.dart';
 
 class TrainSamplesPage extends StatelessWidget {
   const TrainSamplesPage({super.key});

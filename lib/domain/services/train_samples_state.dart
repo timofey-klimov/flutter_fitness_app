@@ -1,8 +1,9 @@
-import 'package:app/domain/activities/activity.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:app/domain/activities/activity.dart';
 import 'package:app/domain/exercises/exercise.dart';
+import 'package:app/domain/models/train_shedule.dart';
 
 class ExerciseState extends Equatable {
   int index;
@@ -56,14 +57,38 @@ class ExerciseState extends Equatable {
 
 class TrainSampleState extends Equatable {
   final List<ExerciseState> exercisesState;
-  TrainSampleState({required this.exercisesState});
+  final TrainScheduleTypes? trainScheduleType;
+  final String? name;
+  final DateTime? trainDate;
+  final bool isSubmitting;
+  TrainSampleState(
+      {required this.exercisesState,
+      required this.isSubmitting,
+      this.name,
+      this.trainScheduleType,
+      this.trainDate});
 
   @override
-  List<Object?> get props => [exercisesState];
+  List<Object?> get props => [exercisesState, trainScheduleType, trainDate];
+
+  TrainSampleState copyWith(
+      {List<ExerciseState>? exercisesState,
+      TrainScheduleTypes? trainScheduleType,
+      DateTime? trainDate,
+      bool? isSubmitting,
+      String? name}) {
+    return TrainSampleState(
+        exercisesState: exercisesState ?? this.exercisesState,
+        trainScheduleType: trainScheduleType ?? this.trainScheduleType,
+        trainDate: trainDate ?? this.trainDate,
+        isSubmitting: isSubmitting ?? this.isSubmitting,
+        name: name ?? this.name);
+  }
 }
 
 class TrainSampleStateNotifier extends StateNotifier<TrainSampleState> {
-  TrainSampleStateNotifier() : super(TrainSampleState(exercisesState: []));
+  TrainSampleStateNotifier()
+      : super(TrainSampleState(exercisesState: [], isSubmitting: false));
 
   int addNewExercise(ExerciseTypes type) {
     var currentExercises = state.exercisesState;
@@ -73,7 +98,7 @@ class TrainSampleStateNotifier extends StateNotifier<TrainSampleState> {
         exerciseType: type,
         index: currentExercises.length,
         isFormEditing: true));
-    state = TrainSampleState(exercisesState: currentExercises);
+    state = state.copyWith(exercisesState: currentExercises);
     return currentExercises.length;
   }
 
@@ -86,7 +111,7 @@ class TrainSampleStateNotifier extends StateNotifier<TrainSampleState> {
       }
       return item;
     }).toList();
-    state = TrainSampleState(exercisesState: currentExercises);
+    state = state.copyWith(exercisesState: currentExercises);
   }
 
   void updateActivityType(ActivityTypes activityType, int index) {
@@ -100,7 +125,7 @@ class TrainSampleStateNotifier extends StateNotifier<TrainSampleState> {
         return item;
       },
     ).toList();
-    state = TrainSampleState(exercisesState: exercises);
+    state = state.copyWith(exercisesState: exercises);
   }
 
   void updateActivity(int index, Activity activity) {
@@ -110,7 +135,7 @@ class TrainSampleStateNotifier extends StateNotifier<TrainSampleState> {
       }
       return item;
     }).toList();
-    state = TrainSampleState(exercisesState: exercises);
+    state = state.copyWith(exercisesState: exercises);
   }
 
   void updateExerciseName(String? name, int index) {
@@ -122,7 +147,7 @@ class TrainSampleStateNotifier extends StateNotifier<TrainSampleState> {
         return item;
       },
     ).toList();
-    state = TrainSampleState(exercisesState: exercises);
+    state = state.copyWith(exercisesState: exercises);
   }
 
   void markExerciseEditing(int index) {
@@ -132,7 +157,7 @@ class TrainSampleStateNotifier extends StateNotifier<TrainSampleState> {
       }
       return e.copyWith(isFormEditing: false);
     }).toList();
-    state = TrainSampleState(exercisesState: exercises);
+    state = state.copyWith(exercisesState: exercises);
   }
 
   void save(int index) {
@@ -142,7 +167,7 @@ class TrainSampleStateNotifier extends StateNotifier<TrainSampleState> {
       }
       return item;
     }).toList();
-    state = TrainSampleState(exercisesState: exercises);
+    state = state.copyWith(exercisesState: exercises);
   }
 
   void updateDeleting(int index, bool isDeleting) {
@@ -153,7 +178,16 @@ class TrainSampleStateNotifier extends StateNotifier<TrainSampleState> {
       return item;
     }).toList();
 
-    state = TrainSampleState(exercisesState: exercises);
+    state = state.copyWith(exercisesState: exercises);
+  }
+
+  void submitTrain(DateTime date, TrainScheduleTypes type) {
+    state = state.copyWith(
+        trainDate: date, trainScheduleType: type, isSubmitting: true);
+  }
+
+  void updateTrainName(String name) {
+    state = state.copyWith(name: name);
   }
 }
 
