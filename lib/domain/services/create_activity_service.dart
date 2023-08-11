@@ -1,5 +1,6 @@
 import 'package:app/domain/activities/approach_activities.dart';
-import 'package:app/domain/services/activity_widgets/weight_approach_activity.dart';
+import 'package:app/domain/services/activity_widgets/display_weight_approach_activity.dart';
+import 'package:app/domain/services/activity_widgets/edit_weight_approach_activity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -31,23 +32,30 @@ ActivityTypes createActivityTypesFromString(String value) {
 }
 
 class CreateActivityService {
-  Widget drawActivity(
+  Widget drawEditActivityForm(
       ActivityTypes activityType, int index, Activity? activityModel) {
-    Widget activity;
     switch (activityType) {
       case ActivityTypes.weightApproach:
-        activity = WeightApproachActivityWdiget(
+        return EditWeightApproachActivityWdiget(
           exerciseIndex: index,
           activity: activityModel == null
               ? null
               : activityModel as WeightApproachActivity,
         );
-        break;
       default:
-        throw new Error();
+        throw Error();
     }
+  }
 
-    return activity;
+  Widget drawDisplayActivityForm(Activity activity) {
+    switch (activity.type) {
+      case ActivityTypes.weightApproach:
+        return DisplayWeightApproachActivityWidget(
+          activity: activity as WeightApproachActivity,
+        );
+      default:
+        throw Error();
+    }
   }
 }
 

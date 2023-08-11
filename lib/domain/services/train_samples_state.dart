@@ -69,7 +69,7 @@ class TrainSampleState extends Equatable {
       this.trainDate});
 
   @override
-  List<Object?> get props => [exercisesState, trainScheduleType, trainDate];
+  List<Object?> get props => [name, trainDate];
 
   TrainSampleState copyWith(
       {List<ExerciseState>? exercisesState,

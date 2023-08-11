@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         blurRadius: 10,
                         spreadRadius: 0)
                   ],
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(20),
                       topLeft: Radius.circular(20))),
               child: ClipRRect(

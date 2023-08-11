@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/repositories/provider.dart';
+import '../../domain/repositories/providers/calendar_provider.dart';
 
 class TodayPage extends StatelessWidget {
   const TodayPage({super.key});
@@ -9,7 +9,8 @@ class TodayPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (ctx, ref, child) {
-      final result = ref.read(getTrainSamplesByDateProvider(DateTime.now()));
+      final result = ref.read(getTrainSamplesByDateProvider(
+          GetTrainsByDateRequest(startDate: DateTime.now())));
       return result.when(
           data: (data) => Center(),
           error: ((error, stackTrace) => Container()),

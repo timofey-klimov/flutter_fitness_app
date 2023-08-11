@@ -60,7 +60,7 @@ class _CreateTrainSamplePageState extends State<CreateTrainSamplePage> {
                     Navigator.of(context).pushNamed('/home');
                   }
                 });
-                return Center(
+                return const Center(
                   child: CircularProgressIndicator(),
                 );
               })

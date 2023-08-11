@@ -67,7 +67,7 @@ class ExerciseInfoCard extends StatelessWidget {
                             state.name!,
                             style: const TextStyle(
                                 fontWeight: FontWeight.w600,
-                                fontSize: 22,
+                                fontSize: 20,
                                 decorationThickness: 0),
                           ),
                           IconButton(

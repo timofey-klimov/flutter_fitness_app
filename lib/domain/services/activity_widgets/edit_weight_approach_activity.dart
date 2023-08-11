@@ -57,8 +57,8 @@ class WeightApproachActivityState {
   }
 }
 
-class WeightApproachActivityWdiget extends StatefulWidget {
-  const WeightApproachActivityWdiget({
+class EditWeightApproachActivityWdiget extends StatefulWidget {
+  const EditWeightApproachActivityWdiget({
     super.key,
     required this.exerciseIndex,
     this.activity,
@@ -66,12 +66,12 @@ class WeightApproachActivityWdiget extends StatefulWidget {
   final int exerciseIndex;
   final WeightApproachActivity? activity;
   @override
-  State<WeightApproachActivityWdiget> createState() =>
+  State<EditWeightApproachActivityWdiget> createState() =>
       _WeightApproachActivitWidgetyState();
 }
 
 class _WeightApproachActivitWidgetyState
-    extends State<WeightApproachActivityWdiget> {
+    extends State<EditWeightApproachActivityWdiget> {
   late WeightApproachActivityState state;
   final _key = GlobalKey<AnimatedListState>();
   @override

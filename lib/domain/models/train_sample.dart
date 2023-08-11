@@ -11,11 +11,7 @@ class TrainSample {
   const TrainSample({this.id, required this.sample, required this.name});
 
   Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'sample': sample.map((x) => x.toMap()).toList(),
-      'name': name
-    };
+    return {'sample': sample.map((x) => x.toMap()).toList(), 'name': name};
   }
 
   factory TrainSample.fromMap(Map<String, dynamic> map) {

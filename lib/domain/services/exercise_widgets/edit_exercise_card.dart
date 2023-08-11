@@ -39,7 +39,7 @@ class EditExerciseCard extends StatelessWidget {
                       duration: const Duration(milliseconds: 400),
                       child: state.activityType == null
                           ? Container()
-                          : drawer.drawActivity(
+                          : drawer.drawEditActivityForm(
                               state.activityType!, state.index, state.activity),
                     );
                   }),

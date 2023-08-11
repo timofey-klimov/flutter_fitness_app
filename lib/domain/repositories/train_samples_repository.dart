@@ -17,15 +17,6 @@ class TrainSampleRepository {
         .insert({'uuid': userModel.id, 'sample': sample.toJson()}).select('id');
     return result[0]['id'];
   }
-
-  Future<List<TrainSample>> getTrainsByDate(DateTime date, String uuid) async {
-    final result = await client
-        .from(table_name)
-        .select('train_samples.*,train_calendares!inner(*)')
-        .eq('uuid', uuid)
-        .eq('train_calendares.train_date', date.toIso8601String());
-    return [];
-  }
 }
 
 final trainSampleRepositoryProvider = rv.Provider(

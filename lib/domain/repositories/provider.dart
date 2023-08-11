@@ -1,4 +1,3 @@
-import 'package:app/shared/auth_provider.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -7,6 +6,7 @@ import 'package:app/domain/repositories/train_calendar_repository.dart';
 import 'package:app/domain/repositories/train_samples_repository.dart';
 import 'package:app/domain/services/create_exercise_service.dart';
 import 'package:app/domain/services/train_samples_state.dart';
+import 'package:app/shared/auth_provider.dart';
 import 'package:app/shared/model/user_model.dart';
 
 import '../models/train_shedule.dart';
@@ -40,11 +40,4 @@ final createTrainSampleProvider = FutureProvider.autoDispose
       request.user);
   await trainsCalendarRepository.sheduleTrain(
       sampleId, request.user.id!, request.state.trainDate!);
-});
-
-final getTrainSamplesByDateProvider =
-    FutureProvider.autoDispose.family((ref, DateTime date) async {
-  final provider = ref.read(trainSampleRepositoryProvider);
-  final user = ref.read(appUserProvider);
-  return await provider.getTrainsByDate(date, user.id!);
 });

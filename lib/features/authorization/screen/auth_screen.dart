@@ -61,7 +61,7 @@ class _AuthScreenState extends State<AuthScreen>
                             child: child,
                           );
                         },
-                        duration: Duration(milliseconds: 500),
+                        duration: const Duration(milliseconds: 500),
                         child: formType == FormType.SignIn
                             ? const SignInWidget(
                                 key: ValueKey('SignIn'),

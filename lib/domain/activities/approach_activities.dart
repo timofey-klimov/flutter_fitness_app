@@ -22,10 +22,9 @@ class WeightApproach {
 
   factory WeightApproach.fromMap(Map<String, dynamic> map) {
     return WeightApproach(
-      index: map['index']?.toInt() ?? 0,
-      weight: map['weight']?.toDouble() ?? 0.0,
-      count: map['count']?.toInt() ?? 0,
-    );
+        index: map['index']?.toInt() ?? 0,
+        weight: map['weight'],
+        count: map['count']);
   }
 
   WeightApproach copyWith({

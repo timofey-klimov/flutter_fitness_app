@@ -1,0 +1,1 @@
+enum TrainCardAction { remove, reschedule }
