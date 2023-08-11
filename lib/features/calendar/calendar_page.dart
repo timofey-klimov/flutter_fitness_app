@@ -27,7 +27,9 @@ class _CalendarPageState extends State<CalendarPage> {
     return Consumer(
       builder: (context, ref, child) {
         ref.listen(calendarNotifierProvider, (prev, next) {
-          setState(() {});
+          if (next is CalendarPageReload) {
+            setState(() {});
+          }
         });
         return Flex(
           direction: Axis.vertical,

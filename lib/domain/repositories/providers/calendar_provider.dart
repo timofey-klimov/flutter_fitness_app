@@ -32,7 +32,7 @@ final removeSheduledTrainSample = FutureProvider.family.autoDispose(
     final provider = ref.read(trainCalendarRepositoryProvider);
     await provider.remove(id);
     ref.invalidate(getTrainSamplesByDateProvider);
-    ref.read(calendarEventStream).sink.add('Calendar reload');
+    ref.read(calendarEventStream).sink.add(CalendarPageReload());
   },
 );
 
@@ -52,10 +52,20 @@ final rescheduleTrainProvider =
   final provider = ref.read(trainCalendarRepositoryProvider);
   await provider.reschedule(request.id, request.date);
   ref.invalidate(getTrainSamplesByDateProvider);
-  ref.read(calendarEventStream).sink.add('Calendar reload');
+  ref.read(calendarEventStream).sink.add(CalendarPageReload());
 });
 
-final calendarEventStream = Provider((ref) => StreamController());
+abstract interface class CalendarEvent {}
+
+class CalendarPageReload extends CalendarEvent {}
+
+class CalendarPageNotification extends CalendarEvent {
+  final String message;
+  CalendarPageNotification({required this.message});
+}
+
+final calendarEventStream =
+    Provider((ref) => StreamController<CalendarEvent>());
 
 final calendarNotifierProvider =
     StreamProvider((ref) => ref.watch(calendarEventStream).stream);
