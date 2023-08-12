@@ -14,24 +14,25 @@ class SingleDayHeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final today = DateTime.now();
+    final isDisable = pickedDate.start.equals(today);
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          !pickedDate.start.equals(today)
-              ? IconButton(
-                  onPressed: () {
-                    onUpdate(pickedDate.prevDay());
-                  },
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: AppColors.main,
-                  ),
-                )
-              : const SizedBox(
-                  width: 50,
-                ),
+          IgnorePointer(
+            ignoring: isDisable,
+            child: IconButton(
+              onPressed: () {
+                onUpdate(pickedDate.prevDay());
+              },
+              icon: Icon(
+                Icons.arrow_back,
+                color:
+                    isDisable ? AppColors.main.withOpacity(.5) : AppColors.main,
+              ),
+            ),
+          ),
           TextButton(
             onPressed: () async {
               final today = DateTime.now();
