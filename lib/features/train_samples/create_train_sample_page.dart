@@ -10,7 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:app/domain/services/train_samples_state.dart';
 import 'package:intl/intl.dart';
 import '../../domain/exercises/exercise.dart';
-import '../../domain/repositories/provider.dart';
+import '../../domain/repositories/providers/train_sample_provider.dart';
 import '../../domain/services/create_exercise_service.dart';
 import '../../domain/services/exercise_widgets/exercise_card.dart';
 import '../../shared/color.dart';

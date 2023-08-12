@@ -1,4 +1,5 @@
 import 'package:app/features/calendar/pick_date_model.dart';
+import 'package:app/shared/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -12,26 +13,32 @@ class SingleDayHeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final today = DateTime.now();
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          IconButton(
-              onPressed: () {
-                onUpdate(pickedDate.prevDay());
-              },
-              icon: Icon(
-                Icons.arrow_back,
-                color: AppColors.main,
-              )),
+          !pickedDate.start.equals(today)
+              ? IconButton(
+                  onPressed: () {
+                    onUpdate(pickedDate.prevDay());
+                  },
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: AppColors.main,
+                  ),
+                )
+              : const SizedBox(
+                  width: 50,
+                ),
           TextButton(
             onPressed: () async {
               final today = DateTime.now();
               final result = await showDateRangePicker(
                   initialEntryMode: DatePickerEntryMode.calendarOnly,
                   context: context,
-                  firstDate: DateTime(today.year - 1),
+                  firstDate: today,
                   lastDate: DateTime(today.year + 1));
               if (result == null) return;
 

@@ -22,7 +22,7 @@ class RangeHeaderWidget extends StatelessWidget {
               final result = await showDateRangePicker(
                   initialEntryMode: DatePickerEntryMode.calendarOnly,
                   context: context,
-                  firstDate: DateTime(today.year - 1),
+                  firstDate: DateTime.now(),
                   lastDate: DateTime(today.year + 1));
               if (result == null) return;
 

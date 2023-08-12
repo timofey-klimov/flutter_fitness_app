@@ -1,16 +1,14 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:app/domain/models/train_sample.dart';
-import 'package:app/domain/repositories/train_calendar_repository.dart';
-import 'package:app/domain/repositories/train_samples_repository.dart';
-import 'package:app/domain/services/create_exercise_service.dart';
-import 'package:app/domain/services/train_samples_state.dart';
-import 'package:app/shared/auth_provider.dart';
-import 'package:app/shared/model/user_model.dart';
-
-import '../models/train_shedule.dart';
-import 'train_shedules_repository.dart';
+import '../../../shared/model/user_model.dart';
+import '../../models/train_sample.dart';
+import '../../models/train_shedule.dart';
+import '../../services/create_exercise_service.dart';
+import '../../services/train_samples_state.dart';
+import '../train_calendar_repository.dart';
+import '../train_samples_repository.dart';
+import '../train_shedules_repository.dart';
 
 class CraeteTrainSampleRequest extends Equatable {
   final UserModel user;
