@@ -38,7 +38,7 @@ class _TrainsItemState extends State<TrainsItem> {
               ? Padding(
                   padding: const EdgeInsets.only(bottom: 7),
                   child: Text(
-                    DateFormat('d MMMM', 'ru').format(widget.date),
+                    DateFormat('MMMMEEEEd', 'ru').format(widget.date),
                     style: TextStyle(
                         fontSize: 18,
                         color: AppColors.main,
