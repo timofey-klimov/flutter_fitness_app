@@ -1,3 +1,5 @@
+import 'package:app/features/shared/bottom_menu_widget.dart';
+import 'package:app/features/shared/models/bottom_menu_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -160,30 +162,15 @@ class _ExerciseHeaderWidgetState extends State<ExerciseHeaderWidget> {
       builder: (ctx) {
         var map =
             exerciseActivityNamesMapper.getActivitiesForExercise(exerciseType);
-        final list = <PopupMenuItem<ActivityTypes>>[];
+        final list = <BottomMenuItem<ActivityTypes>>[];
         map.forEach(
           (key, value) {
             list.add(
-              PopupMenuItem<ActivityTypes>(
-                value: key,
-                child: Center(
-                  child: Text(
-                    value,
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                ),
-              ),
+              BottomMenuItem<ActivityTypes>(value: key, text: value),
             );
           },
         );
-        return SizedBox(
-          height: list.length * 70,
-          width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [...list],
-          ),
-        );
+        return BottomMenuWidget(model: BottomMenuModel(items: list));
       },
     );
   }

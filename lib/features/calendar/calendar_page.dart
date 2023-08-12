@@ -27,7 +27,7 @@ class _CalendarPageState extends State<CalendarPage> {
     return Consumer(
       builder: (context, ref, child) {
         ref.listen(calendarNotifierProvider, (prev, next) {
-          if (next is CalendarPageReload) {
+          if (next.hasValue && next.value is CalendarPageReload) {
             setState(() {});
           }
         });

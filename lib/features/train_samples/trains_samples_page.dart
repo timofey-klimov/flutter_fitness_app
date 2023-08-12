@@ -12,29 +12,30 @@ class TrainSamplesPage extends StatelessWidget {
           Container(
             height: 60,
             width: double.infinity,
-            color: AppColors.main,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.article,
-                    color: AppColors.white,
+                Padding(
+                  padding: EdgeInsets.only(left: 10),
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.article,
+                      color: AppColors.main,
+                    ),
                   ),
                 ),
-                Text(
-                  'Тренировки',
-                  style: TextStyle(color: AppColors.white, fontSize: 22),
-                ),
-                IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('/createtrains');
-                    },
-                    icon: Icon(
-                      Icons.add,
-                      color: AppColors.white,
-                    ))
+                Padding(
+                  padding: EdgeInsets.only(right: 10),
+                  child: IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pushNamed('/createtrains');
+                      },
+                      icon: Icon(
+                        Icons.add,
+                        color: AppColors.main,
+                      )),
+                )
               ],
             ),
           )

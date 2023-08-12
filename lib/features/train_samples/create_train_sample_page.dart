@@ -1,4 +1,5 @@
 import 'package:app/domain/models/train_shedule.dart';
+import 'package:app/features/shared/models/bottom_menu_model.dart';
 import 'package:app/features/train_samples/train_shedule_pick_result.dart';
 import 'package:app/shared/auth_provider.dart';
 import 'package:app/shared/components/colored_button.dart';
@@ -14,6 +15,7 @@ import '../../domain/services/create_exercise_service.dart';
 import '../../domain/services/exercise_widgets/exercise_card.dart';
 import '../../shared/color.dart';
 import '../../shared/model/list_state.dart';
+import '../shared/bottom_menu_widget.dart';
 
 class CreateTrainSamplePage extends StatefulWidget {
   const CreateTrainSamplePage({super.key});
@@ -419,29 +421,18 @@ class AddNewExerciseWidget extends StatelessWidget {
                           builder: (ctx, ref, child) {
                             final provider = ref.read(exerciseMapperProvider);
                             final exerciseMap = provider.map();
-                            final list = <PopupMenuItem<ExerciseTypes>>[];
+                            final list = <BottomMenuItem<ExerciseTypes>>[];
                             exerciseMap.forEach(
                               (key, value) {
                                 list.add(
-                                  PopupMenuItem<ExerciseTypes>(
-                                    value: key,
-                                    child: Center(
-                                      child: Text(
-                                        value,
-                                        style: const TextStyle(fontSize: 18),
-                                      ),
-                                    ),
-                                  ),
+                                  BottomMenuItem<ExerciseTypes>(
+                                      value: key, text: value),
                                 );
                               },
                             );
-                            return SizedBox(
-                              height: list.length * 70,
-                              width: double.infinity,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [...list],
-                              ),
+                            final model = BottomMenuModel(items: list);
+                            return BottomMenuWidget(
+                              model: model,
                             );
                           },
                         );
