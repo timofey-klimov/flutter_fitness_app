@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:app/domain/activities/activity.dart';
 import 'package:app/domain/exercises/exercise.dart';
-import 'package:app/domain/models/train_shedule.dart';
+import 'package:app/domain/models/train_info.dart';
 
 class ExerciseState extends Equatable {
   int index;

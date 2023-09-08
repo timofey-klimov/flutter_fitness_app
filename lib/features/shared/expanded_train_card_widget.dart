@@ -72,7 +72,7 @@ class ExpandExerciseWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                exercise.name,
+                exercise.name.capitalize(),
                 style:
                     const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
               ),

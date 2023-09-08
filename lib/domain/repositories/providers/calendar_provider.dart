@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/auth_provider.dart';
-import '../train_calendar_repository.dart';
+import '../sheduled_train_samples_repository.dart';
 
 class GetTrainsByDateRequest extends Equatable {
   final DateTime startDate;
@@ -20,16 +20,16 @@ class GetTrainsByDateRequest extends Equatable {
 
 final getTrainSamplesByDateProvider = FutureProvider.autoDispose.family(
   (ref, GetTrainsByDateRequest request) async {
-    final provider = ref.read(trainCalendarRepositoryProvider);
+    final provider = ref.read(sheduledTrainSampleRepositoryProvider);
     final user = ref.read(appUserProvider);
-    return await provider.getScheduledTrains(
-        user.id!, request.startDate, request.endDate);
+    return await provider.getScheduledTrains(user.id!, request.startDate,
+        end: request.endDate);
   },
 );
 
 final removeSheduledTrainSample = FutureProvider.family.autoDispose(
   (ref, String id) async {
-    final provider = ref.read(trainCalendarRepositoryProvider);
+    final provider = ref.read(sheduledTrainSampleRepositoryProvider);
     await provider.remove(id);
     ref.invalidate(getTrainSamplesByDateProvider);
     ref.read(calendarEventStream).sink.add(CalendarPageReload());
@@ -49,7 +49,7 @@ class ResheduleRequest extends Equatable {
 
 final rescheduleTrainProvider =
     FutureProvider.family.autoDispose((ref, ResheduleRequest request) async {
-  final provider = ref.read(trainCalendarRepositoryProvider);
+  final provider = ref.read(sheduledTrainSampleRepositoryProvider);
   await provider.reschedule(request.id, request.date);
   ref.invalidate(getTrainSamplesByDateProvider);
   ref.read(calendarEventStream).sink.add(CalendarPageReload());

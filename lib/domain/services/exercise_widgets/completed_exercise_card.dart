@@ -50,8 +50,8 @@ class ExerciseInfoCard extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(15),
             child: Card(
-              shadowColor: AppColors.linearBgEnd,
-              color: AppColors.linearBgEnd,
+              shadowColor: AppColors.lightBlue,
+              color: AppColors.lightBlue,
               child: Flex(
                 direction: Axis.vertical,
                 children: [

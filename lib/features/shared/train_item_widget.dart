@@ -95,7 +95,7 @@ class _TrainsItemState extends State<TrainsItem> {
                           )
                           .toList(),
                     )
-                  : SizedBox()
+                  : const SizedBox()
             ],
           )
         ],

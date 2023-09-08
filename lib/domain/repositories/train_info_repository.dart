@@ -2,16 +2,16 @@ import 'package:app/shared/model/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' as rv;
 import '../../shared/supabase_provider.dart';
-import '../models/train_shedule.dart';
+import '../models/train_info.dart';
 
-class TrainSchedulesRepository {
-  final table_name = 'train_schedules';
+class TrainInfoRepository {
+  final table_name = 'trains_info';
   final SupabaseClient client;
-  TrainSchedulesRepository({
+  TrainInfoRepository({
     required this.client,
   });
 
-  Future<String> insert(TrainSchedule schedule, UserModel user) async {
+  Future<String> insert(TrainInfo schedule, UserModel user) async {
     final result = await client.from(table_name).insert({
       'sample_id': schedule.sample_id,
       'schedule_type': schedule.shedule_type.toString(),
@@ -21,5 +21,5 @@ class TrainSchedulesRepository {
   }
 }
 
-final trainScheduleRepositoryProvider = rv.Provider(
-    (ref) => TrainSchedulesRepository(client: ref.read(supabaseProvider)));
+final trainInfoRepositoryProvider = rv.Provider(
+    (ref) => TrainInfoRepository(client: ref.read(supabaseProvider)));

@@ -1,4 +1,4 @@
-import 'package:app/domain/models/train_shedule.dart';
+import 'package:app/domain/models/train_info.dart';
 
 class TrainShedulePickResult {
   final DateTime date;

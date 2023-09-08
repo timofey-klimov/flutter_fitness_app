@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
+
 import '../exercises/exercise.dart';
 import '../services/create_exercise_service.dart';
 
-class TrainSample {
+class TrainSample extends Equatable {
   final String? id;
   final String name;
   final List<Exercise> sample;
@@ -27,4 +29,8 @@ class TrainSample {
 
   factory TrainSample.fromJson(String source) =>
       TrainSample.fromMap(json.decode(source));
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [id];
 }

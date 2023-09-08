@@ -48,7 +48,8 @@ class CollapsedTrainCardWidget extends StatelessWidget {
                       builder: (context, ref, child) {
                         return IconButton(
                           onPressed: () async {
-                            final result = await showModalBottomSheet(
+                            final result =
+                                await showModalBottomSheet<TrainCardAction>(
                               context: context,
                               builder: (ctx) {
                                 return BottomMenuWidget<TrainCardAction>(

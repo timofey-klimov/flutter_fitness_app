@@ -73,6 +73,7 @@ flutter:
   assets:
     - lib/assets/auth_header_png.png
     - lib/assets/weight_icon.png
+    - lib/assets/main_bg.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

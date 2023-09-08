@@ -19,7 +19,7 @@ class BottomMenuWidget<T> extends StatelessWidget {
       ),
       height: model.items.length * 80,
       child: Padding(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: ListView.separated(
             itemBuilder: (ctx, index) {
               final item = model.items[index];

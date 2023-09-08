@@ -5,10 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart' as rv;
 import '../models/sheduled_train_sample.dart';
 import '../models/train_sample.dart';
 
-class TrainCalendarRepository {
-  final table_name = 'train_calendares';
+class SheduledTrainSamplesRepository {
+  final table_name = 'sheduled_train_samples';
   final SupabaseClient client;
-  TrainCalendarRepository({
+  SheduledTrainSamplesRepository({
     required this.client,
   });
 
@@ -23,7 +23,8 @@ class TrainCalendarRepository {
   }
 
   Future<Map<DateTime, List<SheduledTrainSample>>> getScheduledTrains(
-      String uuid, DateTime start, DateTime? end) async {
+      String uuid, DateTime start,
+      {DateTime? end}) async {
     List<dynamic> result;
     if (end == null) {
       result = await client
@@ -76,5 +77,5 @@ class TrainCalendarRepository {
   }
 }
 
-final trainCalendarRepositoryProvider = rv.Provider(
-    (ref) => TrainCalendarRepository(client: ref.read(supabaseProvider)));
+final sheduledTrainSampleRepositoryProvider = rv.Provider((ref) =>
+    SheduledTrainSamplesRepository(client: ref.read(supabaseProvider)));

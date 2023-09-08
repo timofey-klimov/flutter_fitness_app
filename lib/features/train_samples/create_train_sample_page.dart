@@ -1,4 +1,4 @@
-import 'package:app/domain/models/train_shedule.dart';
+import 'package:app/domain/models/train_info.dart';
 import 'package:app/features/shared/models/bottom_menu_model.dart';
 import 'package:app/features/train_samples/train_shedule_pick_result.dart';
 import 'package:app/shared/auth_provider.dart';

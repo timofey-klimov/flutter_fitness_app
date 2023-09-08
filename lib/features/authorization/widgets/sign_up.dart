@@ -21,7 +21,7 @@ class SignUpWidget extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [AppColors.linearBgStart, AppColors.linearBgEnd],
+          colors: [AppColors.linearBgStart, AppColors.lightBlue],
           tileMode: TileMode.mirror,
         ),
       ),

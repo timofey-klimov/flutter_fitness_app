@@ -3,12 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/model/user_model.dart';
 import '../../models/train_sample.dart';
-import '../../models/train_shedule.dart';
+import '../../models/train_info.dart';
 import '../../services/create_exercise_service.dart';
 import '../../services/train_samples_state.dart';
-import '../train_calendar_repository.dart';
+import '../sheduled_train_samples_repository.dart';
 import '../train_samples_repository.dart';
-import '../train_shedules_repository.dart';
+import '../train_info_repository.dart';
 
 class CraeteTrainSampleRequest extends Equatable {
   final UserModel user;
@@ -22,8 +22,9 @@ class CraeteTrainSampleRequest extends Equatable {
 final createTrainSampleProvider = FutureProvider.autoDispose
     .family((ref, CraeteTrainSampleRequest request) async {
   final trainSampleRepository = ref.read(trainSampleRepositoryProvider);
-  final trainScheduleRepository = ref.read(trainScheduleRepositoryProvider);
-  final trainsCalendarRepository = ref.read(trainCalendarRepositoryProvider);
+  final trainInfoRepository = ref.read(trainInfoRepositoryProvider);
+  final sheduledTrainSampleRepository =
+      ref.read(sheduledTrainSampleRepositoryProvider);
   final exercises = request.state.exercisesState
       .map((item) => ExerciseFactory.createExerciseFromState(item))
       .toList();
@@ -32,10 +33,10 @@ final createTrainSampleProvider = FutureProvider.autoDispose
   final sampleId =
       await trainSampleRepository.insert(trainsSample, request.user);
   if (sampleId.isEmpty == true) throw Error();
-  await trainScheduleRepository.insert(
-      TrainSchedule(
+  await trainInfoRepository.insert(
+      TrainInfo(
           sample_id: sampleId, shedule_type: request.state.trainScheduleType!),
       request.user);
-  await trainsCalendarRepository.sheduleTrain(
+  await sheduledTrainSampleRepository.sheduleTrain(
       sampleId, request.user.id!, request.state.trainDate!);
 });

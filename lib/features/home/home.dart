@@ -73,19 +73,19 @@ class _HomeScreenState extends State<HomeScreen> {
     Widget body;
     switch (index) {
       case 0:
-        body = TodayPage();
+        body = const TodayPage();
         break;
       case 1:
-        body = CalendarPage();
+        body = const CalendarPage();
         break;
       case 2:
-        body = TrainSamplesPage();
+        body = const TrainSamplesPage();
         break;
       case 3:
-        body = HistoryPage();
+        body = const HistoryPage();
         break;
       default:
-        throw new Error();
+        throw Error();
     }
 
     return body;
@@ -96,22 +96,22 @@ class _HomeScreenState extends State<HomeScreen> {
       BottomNavigationBarItem(
         label: 'Сегодня',
         backgroundColor: AppColors.accent,
-        icon: Icon(Icons.today),
+        icon: const Icon(Icons.today),
       ),
       BottomNavigationBarItem(
         label: 'Календарь',
         backgroundColor: AppColors.accent,
-        icon: Icon(Icons.calendar_month),
+        icon: const Icon(Icons.calendar_month),
       ),
       BottomNavigationBarItem(
         label: 'Тренировки',
         backgroundColor: AppColors.accent,
-        icon: Icon(Icons.fitness_center_outlined),
+        icon: const Icon(Icons.fitness_center_outlined),
       ),
       BottomNavigationBarItem(
         label: 'История',
         backgroundColor: AppColors.accent,
-        icon: Icon(Icons.history),
+        icon: const Icon(Icons.history),
       ),
     ];
   }
