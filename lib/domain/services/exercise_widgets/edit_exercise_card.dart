@@ -122,7 +122,7 @@ class _ExerciseHeaderWidgetState extends State<ExerciseHeaderWidget> {
                   inputFormatters: [LengthLimitingTextInputFormatter(20)],
                   style: const TextStyle(
                       fontWeight: FontWeight.w600,
-                      fontSize: 18,
+                      fontSize: 20,
                       decorationThickness: 0),
                   decoration: const InputDecoration(
                     border: InputBorder.none,

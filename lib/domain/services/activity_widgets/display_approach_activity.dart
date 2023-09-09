@@ -1,10 +1,9 @@
 import 'package:app/domain/activities/approach_activities.dart';
 import 'package:flutter/material.dart';
 
-class DisplayWeightApproachActivityWidget extends StatelessWidget {
-  final WeightApproachActivity activity;
-  const DisplayWeightApproachActivityWidget(
-      {super.key, required this.activity});
+class DisplayApproachActivityWidget extends StatelessWidget {
+  final ApproachActivity activity;
+  const DisplayApproachActivityWidget({super.key, required this.activity});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +16,7 @@ class DisplayWeightApproachActivityWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 10),
               child: Text(
-                '\u2022 ${el.weight}кг X ${el.count}раз',
+                '\u2022 ${el.count} раз',
                 style: const TextStyle(fontSize: 16),
               ),
             )

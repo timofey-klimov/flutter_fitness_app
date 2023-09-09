@@ -1,4 +1,6 @@
 import 'package:app/domain/activities/approach_activities.dart';
+import 'package:app/domain/activities/timer_activity.dart';
+import 'package:app/domain/activities/total_activity.dart';
 
 import '../services/create_activity_service.dart';
 
@@ -14,6 +16,8 @@ abstract class Activity {
 
   Map<String, dynamic> toMap();
   bool validate();
+
+  T convert<T extends Activity>() => this as T;
 }
 
 class ActivityFactory {
@@ -23,6 +27,12 @@ class ActivityFactory {
     switch (type) {
       case ActivityTypes.weightApproach:
         activity = WeightApproachActivity.fromMap(body);
+      case ActivityTypes.approach:
+        activity = ApproachActivity.fromMap(body);
+      case ActivityTypes.total:
+        activity = TotalActivity.fromMap(body);
+      case ActivityTypes.timer:
+        activity = TimerActivity.fromMap(body);
       default:
         throw new Error();
     }

@@ -1,5 +1,4 @@
 import 'package:app/domain/models/sheduled_train_sample.dart';
-import 'package:app/domain/models/train_sample.dart';
 import 'package:flutter/material.dart';
 
 import '../../shared/train_item_widget.dart';

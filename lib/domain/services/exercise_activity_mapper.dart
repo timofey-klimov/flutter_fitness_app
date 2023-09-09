@@ -10,6 +10,11 @@ class ExerciseActivityMapper {
       ActivityTypes.weightApproach,
       ActivityTypes.total,
       ActivityTypes.timer
+    ],
+    ExerciseTypes.selfWeight: <ActivityTypes>[
+      ActivityTypes.approach,
+      ActivityTypes.total,
+      ActivityTypes.timer
     ]
   };
 

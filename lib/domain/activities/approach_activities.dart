@@ -79,3 +79,57 @@ class WeightApproachActivity extends Activity {
     return result;
   }
 }
+
+class Approach {
+  final int index;
+  final String count;
+  Approach({
+    required this.index,
+    required this.count,
+  });
+
+  bool validate() => count.isNotEmpty;
+
+  Map<String, dynamic> toMap() {
+    return {'index': index, 'count': count};
+  }
+
+  factory Approach.fromMap(Map<String, dynamic> map) =>
+      Approach(index: map['index'], count: map['count']);
+
+  Approach copyWith({int? index, String? count}) {
+    return Approach(index: index ?? this.index, count: count ?? this.count);
+  }
+}
+
+class ApproachActivity extends Activity {
+  List<Approach> approaches;
+  ApproachActivity({required this.approaches})
+      : super(type: ActivityTypes.approach);
+
+  factory ApproachActivity.fromMap(Map<String, dynamic> map) {
+    return ApproachActivity(
+        approaches: (map['approaches'] as List)
+            .map((e) => Approach.fromMap(e))
+            .toList());
+  }
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      Activity.typeKey: type.toString(),
+      'approaches': approaches.map((e) => e.toMap()).toList()
+    };
+  }
+
+  @override
+  bool validate() {
+    if (approaches.isEmpty) {
+      return false;
+    }
+    var result = approaches
+        .map((e) => e.validate())
+        .reduce((value, element) => value && element);
+    return result;
+  }
+}

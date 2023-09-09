@@ -44,9 +44,9 @@ class MyApp extends StatelessWidget {
             firebaseUserProvider,
             (prev, next) {
               if (next.hasValue && next.value != null) {
-                Navigator.of(context).pushNamed('/home');
+                Navigator.of(context).pushNamed(Routes.HomeScreen);
               } else if (next.hasValue && next.value == null) {
-                Navigator.of(context).pushNamed('/auth');
+                Navigator.of(context).pushNamed(Routes.AuthScreen);
               }
             },
           );

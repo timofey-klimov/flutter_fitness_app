@@ -1,3 +1,4 @@
+import 'package:app/routes.dart';
 import 'package:app/shared/color.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +29,8 @@ class TrainSamplesPage extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 10),
                 child: IconButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed('/createtrains');
+                      Navigator.of(context)
+                          .pushNamed(Routes.CreateTrainsScreen);
                     },
                     icon: Icon(
                       Icons.add,

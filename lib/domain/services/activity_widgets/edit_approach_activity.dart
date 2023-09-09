@@ -8,77 +8,74 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../activities/approach_activities.dart';
 
-class WeightApproachActivityState {
-  final List<WeightApproach> approaches;
-  WeightApproachActivityState({
+class ApproachActivityState {
+  final List<Approach> approaches;
+  ApproachActivityState({
     required this.approaches,
   });
 
-  WeightApproachActivityState addNew() {
-    final weightApproach =
-        WeightApproach(index: approaches.length, weight: '', count: '');
+  ApproachActivityState addNew() {
+    final weightApproach = Approach(index: approaches.length, count: '');
     final weightApproaches = [...approaches, weightApproach];
-    return WeightApproachActivityState(approaches: weightApproaches);
+    return ApproachActivityState(approaches: weightApproaches);
   }
 
-  WeightApproachActivityState removeFrom(int index) {
-    final weightApproaches = approaches.map((e) {
+  ApproachActivityState removeFrom(int index) {
+    final currentApproaches = approaches.map((e) {
       if (e.index > index) {
-        return WeightApproach(
-            index: e.index - 1, weight: e.weight, count: e.count);
+        return Approach(index: e.index - 1, count: e.count);
       }
       return e;
     }).toList();
-    return WeightApproachActivityState(approaches: weightApproaches);
+    return ApproachActivityState(approaches: currentApproaches);
   }
 
-  WeightApproachActivityState update(int index, String? count, String? weight) {
-    var weightApproaches = approaches.map((item) {
+  ApproachActivityState update(int index, String? count, String? weight) {
+    var currentApproaches = approaches.map((item) {
       if (item.index == index) {
-        return item.copyWith(count: count, weight: weight);
+        return item.copyWith(count: count);
       }
       return item;
     }).toList();
 
-    return WeightApproachActivityState(approaches: weightApproaches);
+    return ApproachActivityState(approaches: currentApproaches);
   }
 
-  WeightApproachActivityState remove(int index) {
+  ApproachActivityState remove(int index) {
     approaches.removeAt(index);
-    var weightApproaches = approaches.map((item) {
+    var currentApproaches = approaches.map((item) {
       if (item.index > index) {
         return item.copyWith(index: item.index - 1);
       }
       return item;
     }).toList();
 
-    return WeightApproachActivityState(approaches: weightApproaches);
+    return ApproachActivityState(approaches: currentApproaches);
   }
 }
 
-class EditWeightApproachActivityWdiget extends StatefulWidget {
-  const EditWeightApproachActivityWdiget({
+class EditApproachActivityWdiget extends StatefulWidget {
+  const EditApproachActivityWdiget({
     super.key,
     required this.exerciseIndex,
     this.activity,
   });
   final int exerciseIndex;
-  final WeightApproachActivity? activity;
+  final ApproachActivity? activity;
   @override
-  State<EditWeightApproachActivityWdiget> createState() =>
-      _WeightApproachActivitWidgetyState();
+  State<EditApproachActivityWdiget> createState() =>
+      _ApproachActivitWidgetyState();
 }
 
-class _WeightApproachActivitWidgetyState
-    extends State<EditWeightApproachActivityWdiget> {
-  late WeightApproachActivityState state;
+class _ApproachActivitWidgetyState extends State<EditApproachActivityWdiget> {
+  late ApproachActivityState state;
   final _key = GlobalKey<AnimatedListState>();
   @override
   void initState() {
     final approaches = widget.activity == null
-        ? [WeightApproach(index: 0, weight: '', count: '')]
+        ? [Approach(index: 0, count: '')]
         : widget.activity!.approaches;
-    state = WeightApproachActivityState(approaches: approaches);
+    state = ApproachActivityState(approaches: approaches);
     super.initState();
   }
 
@@ -91,7 +88,7 @@ class _WeightApproachActivitWidgetyState
           child: Row(
             children: [
               Flexible(
-                flex: 7,
+                flex: 5,
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 400),
                   height: state.approaches.length * 62,
@@ -99,7 +96,7 @@ class _WeightApproachActivitWidgetyState
                     key: _key,
                     initialItemCount: state.approaches.length,
                     itemBuilder: (ctx, index, animation) {
-                      return WeightApproachWidget(
+                      return ApproachWidget(
                         length: state.approaches.length,
                         approach: state.approaches[index],
                         index: index,
@@ -107,10 +104,8 @@ class _WeightApproachActivitWidgetyState
                           setState(() {
                             state = state.update(appIndex, count, weight);
                           });
-                          notifier.updateActivity(
-                              widget.exerciseIndex,
-                              WeightApproachActivity(
-                                  approaches: state.approaches));
+                          notifier.updateActivity(widget.exerciseIndex,
+                              ApproachActivity(approaches: state.approaches));
                         },
                         onRemove: (index) {
                           setState(() {
@@ -120,10 +115,8 @@ class _WeightApproachActivitWidgetyState
                               (context, animation) {
                             return Container();
                           });
-                          notifier.updateActivity(
-                              widget.exerciseIndex,
-                              WeightApproachActivity(
-                                  approaches: state.approaches));
+                          notifier.updateActivity(widget.exerciseIndex,
+                              ApproachActivity(approaches: state.approaches));
                         },
                       );
                     },
@@ -131,7 +124,7 @@ class _WeightApproachActivitWidgetyState
                 ),
               ),
               Flexible(
-                flex: 3,
+                flex: 7,
                 child: GestureDetector(
                   onDoubleTap: () {
                     setState(() {
@@ -139,7 +132,7 @@ class _WeightApproachActivitWidgetyState
                     });
                     _key.currentState!.insertItem(state.approaches.length - 1);
                     notifier.updateActivity(widget.exerciseIndex,
-                        WeightApproachActivity(approaches: state.approaches));
+                        ApproachActivity(approaches: state.approaches));
                   },
                   child: Container(
                     color: Colors.transparent,
@@ -154,14 +147,14 @@ class _WeightApproachActivitWidgetyState
   }
 }
 
-class WeightApproachWidget extends StatefulWidget {
+class ApproachWidget extends StatefulWidget {
   final int index;
-  final WeightApproach approach;
+  final Approach approach;
   final int length;
   final void Function(int index) onRemove;
   final void Function({String? weight, String? count, required int appIndex})
       update;
-  const WeightApproachWidget(
+  const ApproachWidget(
       {super.key,
       required this.index,
       required this.approach,
@@ -170,15 +163,13 @@ class WeightApproachWidget extends StatefulWidget {
       required this.update});
 
   @override
-  State<WeightApproachWidget> createState() => _WeightApproachWidgetState();
+  State<ApproachWidget> createState() => _ApproachWidgetState();
 }
 
-class _WeightApproachWidgetState extends State<WeightApproachWidget> {
-  late final Debounce weightDebounce;
+class _ApproachWidgetState extends State<ApproachWidget> {
   late final Debounce countDebounce;
   @override
   void initState() {
-    weightDebounce = Debounce(duration: const Duration(milliseconds: 400));
     countDebounce = Debounce(duration: const Duration(milliseconds: 400));
     super.initState();
   }
@@ -187,7 +178,6 @@ class _WeightApproachWidgetState extends State<WeightApproachWidget> {
   Widget build(BuildContext context) {
     return widget.length == 1
         ? ApproachCardWidget(
-            weightDebounce: weightDebounce,
             countDebounce: countDebounce,
             index: widget.index,
             approach: widget.approach,
@@ -200,7 +190,6 @@ class _WeightApproachWidgetState extends State<WeightApproachWidget> {
             ),
             onDismissed: (direction) => widget.onRemove(widget.index),
             child: ApproachCardWidget(
-                weightDebounce: weightDebounce,
                 countDebounce: countDebounce,
                 index: widget.index,
                 approach: widget.approach,
@@ -215,14 +204,12 @@ class ApproachCardWidget extends StatelessWidget {
       required this.index,
       required this.approach,
       required this.update,
-      required this.weightDebounce,
       required this.countDebounce});
 
   final int index;
-  final WeightApproach approach;
+  final Approach approach;
   final void Function({required int appIndex, String? count, String? weight})
       update;
-  final Debounce weightDebounce;
   final Debounce countDebounce;
 
   @override
@@ -237,31 +224,6 @@ class ApproachCardWidget extends StatelessWidget {
             Text(
               '${(index + 1).toString()}.',
               style: const TextStyle(fontSize: 16),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: SizedBox(
-                  width: 70,
-                  child: TextFormField(
-                    initialValue: approach.weight,
-                    onChanged: (value) {
-                      weightDebounce
-                          .run(() => update(weight: value, appIndex: index));
-                    },
-                    decoration: const InputDecoration(
-                        hintText: 'Вес',
-                        hintStyle: TextStyle(color: Colors.grey)),
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp('[0-9.]'))
-                    ],
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 16),
-                  )),
-            ),
-            const Text(
-              'X',
-              style: TextStyle(fontSize: 16),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),

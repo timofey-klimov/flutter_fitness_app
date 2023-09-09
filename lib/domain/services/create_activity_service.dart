@@ -1,5 +1,9 @@
-import 'package:app/domain/activities/approach_activities.dart';
+import 'package:app/domain/services/activity_widgets/display_approach_activity.dart';
+import 'package:app/domain/services/activity_widgets/display_total_activity.dart';
 import 'package:app/domain/services/activity_widgets/display_weight_approach_activity.dart';
+import 'package:app/domain/services/activity_widgets/edit_approach_activity.dart';
+import 'package:app/domain/services/activity_widgets/edit_timer_activity.dart';
+import 'package:app/domain/services/activity_widgets/edit_total_activity.dart';
 import 'package:app/domain/services/activity_widgets/edit_weight_approach_activity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -38,10 +42,16 @@ class CreateActivityService {
       case ActivityTypes.weightApproach:
         return EditWeightApproachActivityWdiget(
           exerciseIndex: index,
-          activity: activityModel == null
-              ? null
-              : activityModel as WeightApproachActivity,
+          activity: activityModel?.convert(),
         );
+      case ActivityTypes.approach:
+        return EditApproachActivityWdiget(
+            exerciseIndex: index, activity: activityModel?.convert());
+      case ActivityTypes.total:
+        return EditTotalActivityWidget(
+            index: index, activity: activityModel?.convert());
+      case ActivityTypes.timer:
+        return EditTimerActivity(activity: activityModel?.convert());
       default:
         throw Error();
     }
@@ -51,8 +61,12 @@ class CreateActivityService {
     switch (activity.type) {
       case ActivityTypes.weightApproach:
         return DisplayWeightApproachActivityWidget(
-          activity: activity as WeightApproachActivity,
+          activity: activity.convert(),
         );
+      case ActivityTypes.approach:
+        return DisplayApproachActivityWidget(activity: activity.convert());
+      case ActivityTypes.total:
+        return DisplayTotalActivity(activity: activity.convert());
       default:
         throw Error();
     }

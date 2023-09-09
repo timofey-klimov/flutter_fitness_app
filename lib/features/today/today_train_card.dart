@@ -1,4 +1,5 @@
 import 'package:app/features/shared/models/train_card_action_model.dart';
+import 'package:app/routes.dart';
 import 'package:app/shared/color.dart';
 import 'package:app/shared/extensions.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class TodayTrainCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+            padding: const EdgeInsets.only(left: 25, top: 15),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -92,7 +93,7 @@ class TodayTrainCard extends StatelessWidget {
             padding: const EdgeInsets.only(left: 25, bottom: 20),
             child: _collapsedExercises(train.trainSample.sample),
           ),
-          Spacer(),
+          const Spacer(),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 15),
             child: Row(
@@ -109,7 +110,10 @@ class TodayTrainCard extends StatelessWidget {
                   ),
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pushNamed(Routes.TrainPageScreen, arguments: train);
+                  },
                   style: TextButton.styleFrom(
                       backgroundColor: AppColors.main,
                       padding: EdgeInsets.symmetric(horizontal: 20),
@@ -143,7 +147,6 @@ class TodayTrainCard extends StatelessWidget {
       ));
     }
     return Column(
-      key: const ValueKey('Calendar_collapse_exercises'),
       crossAxisAlignment: CrossAxisAlignment.start,
       children: rows,
     );
