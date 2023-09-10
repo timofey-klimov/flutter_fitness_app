@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../shared/model/user_model.dart';
 import '../../models/train_sample.dart';
 import '../../models/train_info.dart';
-import '../../services/create_exercise_service.dart';
+import '../../services/factory/create_exercise_service.dart';
 import '../../services/train_samples_state.dart';
 import '../sheduled_train_samples_repository.dart';
 import '../train_samples_repository.dart';

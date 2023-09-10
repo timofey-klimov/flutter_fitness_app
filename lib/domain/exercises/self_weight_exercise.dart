@@ -4,7 +4,7 @@ import 'package:app/domain/exercises/exercise.dart';
 class SelfWeightExercise extends Exercise {
   SelfWeightExercise(
       {required super.activity, required super.index, required super.name})
-      : super(type: ExerciseTypes.weight);
+      : super(type: ExerciseTypes.selfWeight);
 
   factory SelfWeightExercise.fromMap(Map<String, dynamic> map) {
     return SelfWeightExercise(

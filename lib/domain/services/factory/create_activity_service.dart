@@ -1,14 +1,15 @@
-import 'package:app/domain/services/activity_widgets/display_approach_activity.dart';
-import 'package:app/domain/services/activity_widgets/display_total_activity.dart';
-import 'package:app/domain/services/activity_widgets/display_weight_approach_activity.dart';
-import 'package:app/domain/services/activity_widgets/edit_approach_activity.dart';
-import 'package:app/domain/services/activity_widgets/edit_timer_activity.dart';
-import 'package:app/domain/services/activity_widgets/edit_total_activity.dart';
-import 'package:app/domain/services/activity_widgets/edit_weight_approach_activity.dart';
+import 'package:app/domain/services/activity_widgets/display/display_approach_activity.dart';
+import 'package:app/domain/services/activity_widgets/display/display_timer_activity.dart';
+import 'package:app/domain/services/activity_widgets/display/display_total_activity.dart';
+import 'package:app/domain/services/activity_widgets/display/display_weight_approach_activity.dart';
+import 'package:app/domain/services/activity_widgets/edit/edit_approach_activity.dart';
+import 'package:app/domain/services/activity_widgets/edit/edit_timer_activity.dart';
+import 'package:app/domain/services/activity_widgets/edit/edit_total_activity.dart';
+import 'package:app/domain/services/activity_widgets/edit/edit_weight_approach_activity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../activities/activity.dart';
+import '../../activities/activity.dart';
 
 class ActivityTypesMapper {
   Map<ActivityTypes, String> map() {
@@ -51,7 +52,8 @@ class CreateActivityService {
         return EditTotalActivityWidget(
             index: index, activity: activityModel?.convert());
       case ActivityTypes.timer:
-        return EditTimerActivity(activity: activityModel?.convert());
+        return EditTimerActivity(
+            index: index, activity: activityModel?.convert());
       default:
         throw Error();
     }
@@ -67,6 +69,8 @@ class CreateActivityService {
         return DisplayApproachActivityWidget(activity: activity.convert());
       case ActivityTypes.total:
         return DisplayTotalActivity(activity: activity.convert());
+      case ActivityTypes.timer:
+        return DisplayTimerActivity(activity: activity.convert());
       default:
         throw Error();
     }

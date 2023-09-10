@@ -102,6 +102,8 @@ class TodayTrainCard extends StatelessWidget {
                 OutlinedButton(
                   onPressed: () {},
                   style: OutlinedButton.styleFrom(
+                      minimumSize:
+                          Size(MediaQuery.of(context).size.width * 0.5, 45),
                       backgroundColor: Colors.transparent,
                       foregroundColor: AppColors.main),
                   child: const Text(
@@ -115,8 +117,10 @@ class TodayTrainCard extends StatelessWidget {
                         .pushNamed(Routes.TrainPageScreen, arguments: train);
                   },
                   style: TextButton.styleFrom(
+                      minimumSize:
+                          Size(MediaQuery.of(context).size.width * 0.3, 45),
                       backgroundColor: AppColors.main,
-                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       foregroundColor: AppColors.white),
                   child: const Text(
                     'Начать',

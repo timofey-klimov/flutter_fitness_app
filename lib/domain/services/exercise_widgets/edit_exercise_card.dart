@@ -9,7 +9,7 @@ import '../../../shared/components/colored_button.dart';
 import '../../../shared/debounce.dart';
 import '../../activities/activity.dart';
 import '../../exercises/exercise.dart';
-import '../create_activity_service.dart';
+import '../factory/create_activity_service.dart';
 import '../exercise_activity_mapper.dart';
 import '../train_samples_state.dart';
 

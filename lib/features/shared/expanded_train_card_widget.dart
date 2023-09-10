@@ -4,7 +4,7 @@ import 'package:app/shared/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/services/create_activity_service.dart';
+import '../../domain/services/factory/create_activity_service.dart';
 
 class ExpandedTrainCardWidget extends StatelessWidget {
   final TrainSample trainSample;

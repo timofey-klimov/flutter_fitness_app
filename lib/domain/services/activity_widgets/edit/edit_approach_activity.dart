@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:app/shared/color.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../activities/approach_activities.dart';
+import '../../../activities/approach_activities.dart';
 
 class ApproachActivityState {
   final List<Approach> approaches;

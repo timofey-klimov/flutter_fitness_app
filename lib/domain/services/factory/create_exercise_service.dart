@@ -25,6 +25,8 @@ class ExerciseFactory {
     switch (type) {
       case ExerciseTypes.weight:
         return WeightExercise.fromMap(map);
+      case ExerciseTypes.selfWeight:
+        return SelfWeightExercise.fromMap(map);
       default:
         throw new Error();
     }
