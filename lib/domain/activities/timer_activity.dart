@@ -21,12 +21,40 @@ class TimeInterval {
 
   bool validate() => seconds > 0 || minutes > 0 || hours > 0;
 
-  TimeInterval copyWith({int? seconds, int? minutes, int? hours}) =>
-      TimeInterval(
-        seconds: seconds ?? this.seconds,
-        minutes: minutes ?? this.minutes,
-        hours: hours ?? this.hours,
-      );
+  TimeInterval copyWith({int? seconds, int? minutes, int? hours}) {
+    final result = _calculate(
+        seconds ?? this.seconds, minutes ?? this.minutes, hours ?? this.hours);
+    return TimeInterval(
+        seconds: result.$3, minutes: result.$2, hours: result.$1);
+  }
+
+  (int hours, int minutes, int seconds) _calculate(
+      int seconds, int minutes, int hours) {
+    var currentHours = 0;
+    var currentMinutes = 0;
+    var currentSeconds = 0;
+    if (seconds > 0) {
+      if (seconds / 60 == 1) {
+        currentMinutes = ++minutes;
+      } else {
+        currentSeconds = seconds;
+      }
+    }
+
+    if (minutes > 0) {
+      if (minutes / 60 == 1) {
+        currentHours = ++hours;
+      } else {
+        currentMinutes = minutes;
+      }
+    }
+
+    if (hours > 0) {
+      currentHours = hours;
+    }
+
+    return (currentHours, currentMinutes, currentSeconds);
+  }
 
   @override
   String toString() {

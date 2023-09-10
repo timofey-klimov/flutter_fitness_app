@@ -108,7 +108,7 @@ class MinutesPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Picker(
-        minValue: 0, maxValue: 59, onChanged: onChanged, value: value);
+        minValue: 0, maxValue: 60, onChanged: onChanged, value: value);
   }
 }
 
@@ -121,7 +121,7 @@ class SecondsPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Picker(
-        minValue: 0, maxValue: 59, onChanged: onChanged, value: value);
+        minValue: 0, maxValue: 60, onChanged: onChanged, value: value);
   }
 }
 
@@ -140,7 +140,7 @@ class Picker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(3),
+      padding: const EdgeInsets.all(3),
       child: NumberPicker(
           textMapper: (numberText) {
             if (numberText.length == 1) {
