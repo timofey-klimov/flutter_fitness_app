@@ -8,19 +8,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../application/riverpod/calendar/remove_sheduled_train_sample_provider.dart';
 import '../../application/riverpod/calendar/reshedule_train_sample_provider.dart';
 import '../../application/usecases/calendar/reshedule_train_sample_use_case.dart';
-import '../../shared/color.dart';
 import 'bottom_menu_widget.dart';
 import 'models/train_card_action_model.dart';
 
 class CollapsedTrainCardWidget extends StatelessWidget {
   final TrainSample sample;
   final Function(TrainSample sample) onExpand;
+  final Color color;
   final String id;
   const CollapsedTrainCardWidget({
     super.key,
     required this.sample,
     required this.id,
     required this.onExpand,
+    required this.color,
   });
 
   @override
@@ -30,7 +31,7 @@ class CollapsedTrainCardWidget extends StatelessWidget {
         onExpand(sample);
       },
       child: Card(
-        color: AppColors.lightGreen,
+        color: color,
         child: SizedBox(
           width: double.infinity,
           child: Column(

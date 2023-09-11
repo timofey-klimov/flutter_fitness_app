@@ -61,6 +61,7 @@ class _TrainsItemState extends State<TrainsItem> {
                   children: widget.sheduledTrains
                       .map(
                         (item) => CollapsedTrainCardWidget(
+                          color: AppColors.lightGreen,
                           id: item.id,
                           sample: item.trainSample,
                           onExpand: (sample) async {

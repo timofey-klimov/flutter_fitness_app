@@ -10,10 +10,13 @@ class TrainResult extends Equatable {
   final TrainResultStatus status;
   final TrainSample? plan;
   final TrainSample? fact;
-  //заполняется в бд
-  final DateTime? trainDate;
+  final DateTime date;
   TrainResult(
-      {this.id, required this.status, this.plan, this.fact, this.trainDate});
+      {this.id,
+      required this.status,
+      this.plan,
+      this.fact,
+      required this.date});
 
   Map<String, dynamic> toMap() {
     return {
@@ -21,16 +24,20 @@ class TrainResult extends Equatable {
       'status': status.toString(),
       'plan': plan?.toMap(),
       'fact': fact?.toMap(),
+      'train_date': date.toIso8601String()
     };
   }
 
   factory TrainResult.finished(
-      {required TrainSample plan, required TrainSample fact}) {
+      {required TrainSample plan,
+      required TrainSample fact,
+      required DateTime date}) {
     return TrainResult(
-        status: TrainResultStatus.finished, plan: plan, fact: fact);
+        status: TrainResultStatus.finished, plan: plan, fact: fact, date: date);
   }
-  factory TrainResult.removed({required TrainSample plan}) =>
-      TrainResult(status: TrainResultStatus.removed, plan: plan);
+  factory TrainResult.removed(
+          {required TrainSample plan, required DateTime date}) =>
+      TrainResult(status: TrainResultStatus.removed, plan: plan, date: date);
 
   factory TrainResult.fromMap(Map<String, dynamic> map) {
     return TrainResult(
@@ -38,7 +45,7 @@ class TrainResult extends Equatable {
       status: createStatus(map['status']),
       plan: TrainSample.fromMap(map['plan']),
       fact: TrainSample.fromMap(map['fact']),
-      trainDate: DateTime.fromMillisecondsSinceEpoch(map['created_at']),
+      date: DateTime.fromMillisecondsSinceEpoch(map['train_date']),
     );
   }
 

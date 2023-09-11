@@ -3,8 +3,7 @@ import 'package:app/domain/models/train_sample.dart';
 class SheduledTrainSample {
   final String id;
   final TrainSample trainSample;
-  SheduledTrainSample({
-    required this.id,
-    required this.trainSample,
-  });
+  final DateTime date;
+  SheduledTrainSample(
+      {required this.id, required this.trainSample, required this.date});
 }

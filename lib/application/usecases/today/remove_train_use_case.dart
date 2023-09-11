@@ -27,7 +27,7 @@ class RemoveTodayTrainUseCase
   @override
   Future<void> call(RemoveTodayTrainRequest request) async {
     await sheduledTrainSamplesRepository.remove(request.trainSample.id);
-    await trainResultsRepository
-        .insert(TrainResult.removed(plan: request.trainSample.trainSample));
+    await trainResultsRepository.insert(TrainResult.removed(
+        plan: request.trainSample.trainSample, date: request.trainSample.date));
   }
 }

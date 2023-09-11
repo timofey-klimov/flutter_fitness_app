@@ -17,4 +17,10 @@ class TrainInfoRepository {
     }).select('id');
     return result[0]['id'];
   }
+
+  Future<List<TrainInfo>> getAllWithSamples() async {
+    final result =
+        await client.from(table_name).select('*,train_samples!inner(*)');
+    return (result as List).map((e) => TrainInfo.fromMap(e)).toList();
+  }
 }

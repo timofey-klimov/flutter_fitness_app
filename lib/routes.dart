@@ -3,7 +3,7 @@ import 'package:app/features/home/home.dart';
 import 'package:app/features/train/train_page.dart';
 import 'package:flutter/material.dart';
 
-import 'features/train_samples/create_train_sample_page.dart';
+import 'features/train_samples/create/create_train_sample_page.dart';
 
 Map<String, Widget Function(BuildContext context)> get routes {
   return {

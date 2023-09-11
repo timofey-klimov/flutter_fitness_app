@@ -45,6 +45,7 @@ class SheduledTrainSamplesRepository {
         map.update(DateTime.parse(el['train_date']), (value) {
           value.add(SheduledTrainSample(
               id: el['id'],
+              date: DateTime.parse(el['train_date']),
               trainSample:
                   TrainSample.fromJson(el['train_samples']['sample'])));
           return [...value];
@@ -54,6 +55,7 @@ class SheduledTrainSamplesRepository {
           DateTime.parse(el['train_date']): <SheduledTrainSample>[
             SheduledTrainSample(
                 id: el['id'],
+                date: DateTime.parse(el['train_date']),
                 trainSample:
                     TrainSample.fromJson(el['train_samples']['sample']))
           ]

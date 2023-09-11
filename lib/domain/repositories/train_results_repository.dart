@@ -11,7 +11,8 @@ class TrainResultsRepository {
     final result = await client.from(table_name).insert({
       'status': trainResult.status.toString(),
       'plan': trainResult.plan,
-      'fact': trainResult.fact
+      'fact': trainResult.fact,
+      'train_date': trainResult.date.toIso8601String()
     }).select('id');
     return result[0]['id'];
   }
