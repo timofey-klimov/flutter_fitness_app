@@ -1,4 +1,4 @@
-import 'package:app/domain/services/train_samples_state.dart';
+import 'package:app/application/services/train_samples_state.dart';
 import 'package:app/shared/debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:app/shared/color.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../activities/approach_activities.dart';
+import '../../../../domain/activities/approach_activities.dart';
 
 class ApproachActivityState {
   final List<Approach> approaches;

@@ -1,7 +1,7 @@
 import 'package:app/domain/exercises/exercise.dart';
 import 'package:app/domain/exercises/self_weight_exercise.dart';
 import 'package:app/domain/exercises/weight_exercise.dart';
-import 'package:app/domain/services/train_samples_state.dart';
+import 'package:app/application/services/train_samples_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ExerciseMapper {

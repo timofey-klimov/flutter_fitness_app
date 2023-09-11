@@ -15,3 +15,9 @@ extension DateTimeExtensin on DateTime {
 extension NullStringExtension on String? {
   bool isValid() => this != null && this!.isNotEmpty;
 }
+
+extension IntExtension on int {
+  Duration get ms => Duration(milliseconds: this);
+  Duration get sc => Duration(seconds: this);
+  Duration get ml => Duration(milliseconds: this);
+}

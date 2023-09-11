@@ -1,6 +1,4 @@
-import 'package:app/shared/supabase_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart' as rv;
 
 import '../models/sheduled_train_sample.dart';
 import '../models/train_sample.dart';
@@ -76,6 +74,3 @@ class SheduledTrainSamplesRepository {
         .update({'train_date': date.toIso8601String()}).eq('id', id);
   }
 }
-
-final sheduledTrainSampleRepositoryProvider = rv.Provider((ref) =>
-    SheduledTrainSamplesRepository(client: ref.read(supabaseProvider)));

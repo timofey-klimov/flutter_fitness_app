@@ -142,6 +142,7 @@ class Picker extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(3),
       child: NumberPicker(
+          itemWidth: MediaQuery.of(context).size.width * 0.22,
           textMapper: (numberText) {
             if (numberText.length == 1) {
               return "0$numberText";

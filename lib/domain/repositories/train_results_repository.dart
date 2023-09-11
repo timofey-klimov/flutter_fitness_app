@@ -1,7 +1,6 @@
 import 'package:app/domain/models/train_result.dart';
 import 'package:app/shared/supabase_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart' as rv;
 
 class TrainResultsRepository {
   final table_name = 'train_results';
@@ -17,7 +16,3 @@ class TrainResultsRepository {
     return result[0]['id'];
   }
 }
-
-final trainResultsRepositoryProvider = rv.Provider(
-  (ref) => TrainResultsRepository(client: ref.read(supabaseProvider)),
-);

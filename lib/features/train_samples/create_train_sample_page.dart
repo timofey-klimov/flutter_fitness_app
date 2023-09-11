@@ -3,16 +3,18 @@ import 'package:app/features/shared/models/bottom_menu_model.dart';
 import 'package:app/features/train_samples/train_shedule_pick_result.dart';
 import 'package:app/shared/auth_provider.dart';
 import 'package:app/shared/components/colored_button.dart';
+import 'package:app/shared/components/spinner.dart';
 import 'package:app/shared/debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:app/domain/services/train_samples_state.dart';
+import 'package:app/application/services/train_samples_state.dart';
 import 'package:intl/intl.dart';
+import '../../application/riverpod/train_samples/create_train_sample_provider.dart';
+import '../../application/usecases/train_samples/create_train_sample_use_case.dart';
 import '../../domain/exercises/exercise.dart';
-import '../../domain/repositories/providers/train_sample_provider.dart';
-import '../../domain/services/factory/create_exercise_service.dart';
-import '../../domain/services/exercise_widgets/exercise_card.dart';
+import '../../application/services/factory/create_exercise_service.dart';
+import '../../application/services/exercise_widgets/exercise_card.dart';
 import '../../shared/color.dart';
 import '../../shared/model/list_state.dart';
 import '../shared/bottom_menu_widget.dart';
@@ -53,7 +55,7 @@ class _CreateTrainSamplePageState extends State<CreateTrainSamplePage> {
                 final user = ref.read(appUserProvider);
                 ref.listen(
                     createTrainSampleProvider(
-                        CraeteTrainSampleRequest(user: user, state: state)),
+                        CreateTrainSampleRequest(user: user, state: state)),
                     (prev, next) {
                   if (next.hasError) {
                     Navigator.of(context).pushNamed('/home');
@@ -63,7 +65,7 @@ class _CreateTrainSamplePageState extends State<CreateTrainSamplePage> {
                   }
                 });
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: Spinner(),
                 );
               })
             : Flex(

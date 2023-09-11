@@ -2,7 +2,7 @@ import 'package:app/domain/activities/approach_activities.dart';
 import 'package:app/domain/activities/timer_activity.dart';
 import 'package:app/domain/activities/total_activity.dart';
 
-import '../services/factory/create_activity_service.dart';
+import '../../application/services/factory/create_activity_service.dart';
 
 enum ActivityTypes { weightApproach, approach, total, timer }
 

@@ -5,7 +5,9 @@ import 'package:app/shared/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/repositories/providers/calendar_provider.dart';
+import '../../application/riverpod/calendar/remove_sheduled_train_sample_provider.dart';
+import '../../application/riverpod/calendar/reshedule_train_sample_provider.dart';
+import '../../application/usecases/calendar/reshedule_train_sample_use_case.dart';
 import '../../shared/color.dart';
 import 'bottom_menu_widget.dart';
 import 'models/train_card_action_model.dart';
@@ -66,7 +68,7 @@ class CollapsedTrainCardWidget extends StatelessWidget {
                               },
                             );
                             if (result == TrainCardAction.remove) {
-                              ref.watch(removeSheduledTrainSample(id));
+                              ref.watch(removeSheduledTrainSampleProvider(id));
                             }
                             if (result == TrainCardAction.reschedule) {
                               final today = DateTime.now();
@@ -81,8 +83,9 @@ class CollapsedTrainCardWidget extends StatelessWidget {
                                   lastDate: lastDay);
                               if (newDate != null) {
                                 ref.watch(
-                                  rescheduleTrainProvider(
-                                    ResheduleRequest(id: id, date: newDate),
+                                  resheduleTrainSampleProvider(
+                                    ResheduleTrainSampleRequest(
+                                        id: id, date: newDate),
                                   ),
                                 );
                               }

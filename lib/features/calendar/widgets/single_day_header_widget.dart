@@ -1,8 +1,8 @@
-import 'package:app/features/calendar/pick_date_model.dart';
 import 'package:app/shared/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../application/riverpod/calendar/pick_date.dart';
 import '../../../shared/color.dart';
 
 class SingleDayHeaderWidget extends StatelessWidget {

@@ -1,9 +1,11 @@
 import 'package:app/features/calendar/widgets/trains_list_widget.dart';
+import 'package:app/shared/components/spinner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../domain/repositories/providers/calendar_provider.dart';
-import '../pick_date_model.dart';
+import '../../../application/riverpod/calendar/get_train_sample_by_date_provider.dart';
+import '../../../application/riverpod/calendar/pick_date.dart';
+import '../../../application/usecases/calendar/get_train_samples_by_date_use_case.dart';
 
 class Trains extends StatelessWidget {
   final PickDateModel pickDate;
@@ -24,7 +26,7 @@ class Trains extends StatelessWidget {
             error: (e, s) => Container(),
             loading: () => const Align(
                   alignment: Alignment.center,
-                  child: CircularProgressIndicator(),
+                  child: Spinner(),
                 ));
       },
     );

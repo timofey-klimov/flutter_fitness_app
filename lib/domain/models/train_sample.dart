@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 
 import '../exercises/exercise.dart';
-import '../services/factory/create_exercise_service.dart';
+import '../../application/services/factory/create_exercise_service.dart';
 
 class TrainSample extends Equatable {
   final String? id;

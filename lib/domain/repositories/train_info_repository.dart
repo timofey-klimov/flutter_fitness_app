@@ -1,7 +1,5 @@
 import 'package:app/shared/model/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart' as rv;
-import '../../shared/supabase_provider.dart';
 import '../models/train_info.dart';
 
 class TrainInfoRepository {
@@ -20,6 +18,3 @@ class TrainInfoRepository {
     return result[0]['id'];
   }
 }
-
-final trainInfoRepositoryProvider = rv.Provider(
-    (ref) => TrainInfoRepository(client: ref.read(supabaseProvider)));

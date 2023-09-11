@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:app/domain/services/train_samples_state.dart';
+import 'package:app/application/services/train_samples_state.dart';
 import 'completed_exercise_card.dart';
 import 'edit_exercise_card.dart';
 

@@ -33,7 +33,10 @@ class _TodayTrainState extends State<TodayTrain> {
               }),
               children: widget.trains
                   .map(
-                    (train) => TodayTrainCard(train: train),
+                    (train) => TodayTrainCard(
+                      train: train,
+                      prevTrains: widget.trains,
+                    ),
                   )
                   .toList(),
             ),

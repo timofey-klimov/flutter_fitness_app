@@ -1,15 +1,15 @@
-import 'package:app/domain/services/activity_widgets/display/display_approach_activity.dart';
-import 'package:app/domain/services/activity_widgets/display/display_timer_activity.dart';
-import 'package:app/domain/services/activity_widgets/display/display_total_activity.dart';
-import 'package:app/domain/services/activity_widgets/display/display_weight_approach_activity.dart';
-import 'package:app/domain/services/activity_widgets/edit/edit_approach_activity.dart';
-import 'package:app/domain/services/activity_widgets/edit/edit_timer_activity.dart';
-import 'package:app/domain/services/activity_widgets/edit/edit_total_activity.dart';
-import 'package:app/domain/services/activity_widgets/edit/edit_weight_approach_activity.dart';
+import 'package:app/application/services/activity_widgets/display/display_approach_activity.dart';
+import 'package:app/application/services/activity_widgets/display/display_timer_activity.dart';
+import 'package:app/application/services/activity_widgets/display/display_total_activity.dart';
+import 'package:app/application/services/activity_widgets/display/display_weight_approach_activity.dart';
+import 'package:app/application/services/activity_widgets/edit/edit_approach_activity.dart';
+import 'package:app/application/services/activity_widgets/edit/edit_timer_activity.dart';
+import 'package:app/application/services/activity_widgets/edit/edit_total_activity.dart';
+import 'package:app/application/services/activity_widgets/edit/edit_weight_approach_activity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../activities/activity.dart';
+import '../../../domain/activities/activity.dart';
 
 class ActivityTypesMapper {
   Map<ActivityTypes, String> map() {

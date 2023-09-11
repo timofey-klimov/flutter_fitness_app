@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../application/riverpod/calendar/pick_date.dart';
 import '../../../shared/color.dart';
-import '../pick_date_model.dart';
 
 class RangeHeaderWidget extends StatelessWidget {
   const RangeHeaderWidget(

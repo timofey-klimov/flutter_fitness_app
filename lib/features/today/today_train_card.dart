@@ -1,3 +1,5 @@
+import 'package:app/application/riverpod/today/remove_today_train_provider.dart';
+import 'package:app/application/riverpod/today/reshedule_today_train_provider.dart';
 import 'package:app/features/shared/models/train_card_action_model.dart';
 import 'package:app/routes.dart';
 import 'package:app/shared/color.dart';
@@ -5,16 +7,18 @@ import 'package:app/shared/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../application/usecases/today/reshedule_today_train_use_case.dart';
 import '../../domain/exercises/exercise.dart';
 import '../../domain/models/sheduled_train_sample.dart';
-import '../../domain/repositories/providers/calendar_provider.dart';
-import '../../domain/repositories/providers/today_provider.dart';
+import '../../application/usecases/today/remove_train_use_case.dart';
 import '../shared/bottom_menu_widget.dart';
 import '../shared/models/bottom_menu_model.dart';
 
 class TodayTrainCard extends StatelessWidget {
   final SheduledTrainSample train;
-  const TodayTrainCard({super.key, required this.train});
+  final List<SheduledTrainSample> prevTrains;
+  const TodayTrainCard(
+      {super.key, required this.train, required this.prevTrains});
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +61,9 @@ class TodayTrainCard extends StatelessWidget {
                           },
                         );
                         if (result == TrainCardAction.remove) {
-                          ref.watch(removeTrainProvider(train));
+                          ref.watch(removeTodayTrainProvider(
+                              RemoveTodayTrainRequest(
+                                  trainSample: train, prevTrains: prevTrains)));
                         }
                         if (result == TrainCardAction.reschedule) {
                           final today = DateTime.now();
@@ -72,8 +78,11 @@ class TodayTrainCard extends StatelessWidget {
                               lastDate: lastDay);
                           if (newDate != null) {
                             ref.watch(
-                              rescheduleTodayTrainProvider(
-                                ResheduleRequest(id: train.id, date: newDate),
+                              resheduleTodayTrainProvider(
+                                ResheduleTodayTrainRequest(
+                                  id: train.id,
+                                  date: newDate,
+                                ),
                               ),
                             );
                           }
