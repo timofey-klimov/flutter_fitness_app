@@ -5,6 +5,7 @@ import 'package:app/features/today/today_page.dart';
 import 'package:app/features/train_samples/trains_samples_page.dart';
 import 'package:app/shared/color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -55,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   selectedIconTheme: IconThemeData(color: AppColors.white),
                   selectedItemColor: Colors.white,
                   onTap: (value) {
+                    HapticFeedback.lightImpact();
                     pageStateNotifier.toPage(
                         value, PageChangeEventType.FromNavigation);
                   },

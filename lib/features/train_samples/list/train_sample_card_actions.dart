@@ -1,0 +1,1 @@
+enum TrainSampleCardActions { edit, remove }

@@ -8,10 +8,13 @@ final removeTodayTrainProvider = Provider.autoDispose.family(
   (ref, RemoveTodayTrainRequest request) async {
     await Future.delayed(const Duration(milliseconds: 300));
     final notifier = ref.read(todayPageStateProvider.notifier);
-    notifier.startReload(request.prevTrains);
-    final removeTodayTrainUseCase = ref.read(removeTodayTrainUseCaseProvider);
-    await removeTodayTrainUseCase(request);
-    final getTrainsUseCase = ref.read(getTodayTrainsUseCaseProvider);
-    notifier.finishReload(await getTrainsUseCase());
+    final state = ref.read(todayPageStateProvider);
+    if (state is TodayPageLoadedState || state is TodayPageFinishReloadState) {
+      notifier.startReload(state.trains);
+      final removeTodayTrainUseCase = ref.read(removeTodayTrainUseCaseProvider);
+      await removeTodayTrainUseCase(request);
+      final getTrainsUseCase = ref.read(getTodayTrainsUseCaseProvider);
+      notifier.finishReload(await getTrainsUseCase());
+    }
   },
 );

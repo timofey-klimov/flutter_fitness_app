@@ -8,18 +8,28 @@ import '../../application/services/factory/create_exercise_service.dart';
 class TrainSample extends Equatable {
   final String? id;
   final String name;
+  final String train_info_id;
   final List<Exercise> sample;
 
-  const TrainSample({this.id, required this.sample, required this.name});
+  const TrainSample(
+      {this.id,
+      required this.sample,
+      required this.name,
+      required this.train_info_id});
 
   Map<String, dynamic> toMap() {
-    return {'sample': sample.map((x) => x.toMap()).toList(), 'name': name};
+    return {
+      'sample': sample.map((x) => x.toMap()).toList(),
+      'name': name,
+      'train_info_id': train_info_id
+    };
   }
 
   factory TrainSample.fromMap(Map<String, dynamic> map) {
     return TrainSample(
       name: map['name'],
       id: map['id'],
+      train_info_id: 'train_info_id',
       sample: List<Exercise>.from((map['sample'] as List)
           .map((item) => ExerciseFactory.createExercise(item))),
     );

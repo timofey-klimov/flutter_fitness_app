@@ -8,13 +8,11 @@ import '../../../domain/repositories/train_results_repository.dart';
 
 class RemoveTodayTrainRequest extends Equatable {
   final SheduledTrainSample trainSample;
-  final List<SheduledTrainSample> prevTrains;
   const RemoveTodayTrainRequest({
     required this.trainSample,
-    required this.prevTrains,
   });
   @override
-  List<Object?> get props => [trainSample, prevTrains];
+  List<Object?> get props => [trainSample.id];
 }
 
 class RemoveTodayTrainUseCase

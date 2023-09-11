@@ -33,19 +33,18 @@ class CreateTrainSampleUseCase
       required this.sheduledTrainSamplesRepository});
   @override
   Future<void> call(CreateTrainSampleRequest request) async {
+    final trainInfoId = await trainInfoRepository.insert(
+        TrainInfo(shedule_type: request.state.trainScheduleType!),
+        request.user);
     final exercises = request.state.exercisesState
         .map((item) => ExerciseFactory.createExerciseFromState(item))
         .toList();
-    final trainsSample =
-        TrainSample(sample: exercises, name: request.state.name!);
+    final trainsSample = TrainSample(
+        sample: exercises,
+        name: request.state.name!,
+        train_info_id: trainInfoId);
     final sampleId =
         await trainSampleRepository.insert(trainsSample, request.user);
-    if (sampleId.isEmpty == true) throw Error();
-    await trainInfoRepository.insert(
-        TrainInfo(
-            sample_id: sampleId,
-            shedule_type: request.state.trainScheduleType!),
-        request.user);
     await sheduledTrainSamplesRepository.sheduleTrain(
         sampleId, request.user.id!, request.state.trainDate!);
   }

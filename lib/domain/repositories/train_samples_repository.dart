@@ -10,9 +10,11 @@ class TrainSampleRepository {
   });
 
   Future<String> insert(TrainSample sample, UserModel userModel) async {
-    final result = await client
-        .from(table_name)
-        .insert({'uuid': userModel.id, 'sample': sample.toJson()}).select('id');
+    final result = await client.from(table_name).insert({
+      'uuid': userModel.id,
+      'sample': sample.toJson(),
+      'train_info_id': sample.train_info_id
+    }).select('id');
     return result[0]['id'];
   }
 }

@@ -5,6 +5,7 @@ import 'package:app/routes.dart';
 import 'package:app/shared/color.dart';
 import 'package:app/shared/extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/usecases/today/reshedule_today_train_use_case.dart';
@@ -41,6 +42,7 @@ class TodayTrainCard extends StatelessWidget {
                   builder: ((context, ref, child) {
                     return IconButton(
                       onPressed: () async {
+                        HapticFeedback.lightImpact();
                         final result =
                             await showModalBottomSheet<TrainCardAction>(
                           context: context,
@@ -62,8 +64,7 @@ class TodayTrainCard extends StatelessWidget {
                         );
                         if (result == TrainCardAction.remove) {
                           ref.watch(removeTodayTrainProvider(
-                              RemoveTodayTrainRequest(
-                                  trainSample: train, prevTrains: prevTrains)));
+                              RemoveTodayTrainRequest(trainSample: train)));
                         }
                         if (result == TrainCardAction.reschedule) {
                           final today = DateTime.now();
@@ -122,8 +123,12 @@ class TodayTrainCard extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context)
-                        .pushNamed(Routes.TrainPageScreen, arguments: train);
+                    HapticFeedback.lightImpact();
+                    Future.delayed(
+                        100.ms,
+                        () => Navigator.of(context).pushNamed(
+                            Routes.TrainPageScreen,
+                            arguments: train));
                   },
                   style: TextButton.styleFrom(
                       minimumSize:

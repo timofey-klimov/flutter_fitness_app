@@ -1,7 +1,10 @@
+import 'package:app/features/authorization/screen/auth_screen.dart';
+import 'package:app/features/home/home.dart';
 import 'package:app/firebase_options.dart';
 import 'package:app/provider_logger.dart';
 import 'package:app/routes.dart';
 import 'package:app/shared/auth_provider.dart';
+import 'package:app/shared/components/spinner.dart';
 import 'package:app/supabase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -40,17 +43,18 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(useMaterial3: true),
       home: Consumer(
         builder: (context, ref, child) {
-          ref.listen(
-            firebaseUserProvider,
-            (prev, next) {
-              if (next.hasValue && next.value != null) {
-                Navigator.of(context).pushNamed(Routes.HomeScreen);
-              } else if (next.hasValue && next.value == null) {
-                Navigator.of(context).pushNamed(Routes.AuthScreen);
+          var result = ref.watch(firebaseUserProvider);
+          return result.when(
+            data: (user) {
+              if (user != null) {
+                return const HomeScreen();
+              } else {
+                return const AuthScreen();
               }
             },
+            error: (s, e) => Container(),
+            loading: () => const Spinner(),
           );
-          return Container();
         },
       ),
     );

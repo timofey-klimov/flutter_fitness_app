@@ -13,8 +13,7 @@ class ResheduleTodayTrainRequest extends Equatable {
   });
 
   @override
-  // TODO: implement props
-  List<Object?> get props => [id, date];
+  List<Object?> get props => [id];
 }
 
 class ResheduleTodayTrainUseCase

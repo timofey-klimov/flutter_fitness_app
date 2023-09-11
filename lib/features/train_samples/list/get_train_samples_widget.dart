@@ -33,7 +33,7 @@ class _GetTrainSamplesWidgetState extends State<GetTrainSamplesWidget> {
                           child: child,
                         );
                       },
-                      duration: 300.ms,
+                      duration: 400.ms,
                       child: expandedIndex == index
                           ? TrainCardExpandedWidget(
                               key: ValueKey('Expanded$index'),

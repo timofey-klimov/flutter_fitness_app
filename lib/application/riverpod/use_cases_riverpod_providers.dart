@@ -10,6 +10,7 @@ import '../usecases/today/remove_train_use_case.dart';
 import '../usecases/today/reshedule_today_train_use_case.dart';
 import '../usecases/train_samples/create_train_sample_use_case.dart';
 import '../usecases/train_samples/get_all_train_samples_use_case.dart';
+import '../usecases/train_samples/remove_train_sample_use_case.dart';
 
 final getTodayTrainsUseCaseProvider = Provider(
   (ref) => GetTodayTrainsUseCase(
@@ -63,5 +64,11 @@ final resheduleTrainUseCaseProvider = Provider(
 final getAllTrainSamplesUseCaseProvider = Provider(
   (ref) => GetAllTrainSamplesUseCase(
     repository: ref.read(trainInfoRepositoryProvider),
+  ),
+);
+
+final removeTrainSampleUseCaseProvider = Provider(
+  (ref) => RemoveTrainSampleUseCase(
+    trainInfoRepository: ref.read(trainInfoRepositoryProvider),
   ),
 );

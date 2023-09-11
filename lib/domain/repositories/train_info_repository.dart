@@ -11,7 +11,6 @@ class TrainInfoRepository {
 
   Future<String> insert(TrainInfo schedule, UserModel user) async {
     final result = await client.from(table_name).insert({
-      'sample_id': schedule.sample_id,
       'schedule_type': schedule.shedule_type.toString(),
       'uuid': user.id
     }).select('id');
@@ -22,5 +21,9 @@ class TrainInfoRepository {
     final result =
         await client.from(table_name).select('*,train_samples!inner(*)');
     return (result as List).map((e) => TrainInfo.fromMap(e)).toList();
+  }
+
+  Future<void> remove(String id) async {
+    await client.from(table_name).delete().eq('id', id);
   }
 }

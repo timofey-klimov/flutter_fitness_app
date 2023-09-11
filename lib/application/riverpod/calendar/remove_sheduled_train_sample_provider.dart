@@ -11,7 +11,8 @@ final removeSheduledTrainSampleProvider = Provider.autoDispose.family(
     await Future.delayed(300.ms);
     final state = ref.read(calendarPageStateNotifierProvider);
     final stateNotifier = ref.read(calendarPageStateNotifierProvider.notifier);
-    if (state is LoadedCalendarPageState) {
+    if (state is LoadedCalendarPageState ||
+        state is FinishReloadCalendarPageState) {
       stateNotifier.startReload(
           prevTrains: state.trains, model: state.pickDateModel);
       final removeUseCase = ref.read(removeSheduleTrainUseCaseProvider);

@@ -14,8 +14,8 @@ class SheduledTrainSamplesRepository {
       String sampleId, String uuid, DateTime date) async {
     final result = await client.from(table_name).insert({
       'uuid': uuid,
-      'sample_id': sampleId,
-      'train_date': date.toIso8601String()
+      'train_date': date.toIso8601String(),
+      'sample_id': sampleId
     }).select('id');
     return result[0]['id'];
   }

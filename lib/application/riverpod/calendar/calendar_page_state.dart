@@ -6,30 +6,28 @@ import '../../../domain/models/sheduled_train_sample.dart';
 
 abstract class CalendarPageState {
   final PickDateModel pickDateModel;
-  CalendarPageState({
-    required this.pickDateModel,
-  });
+  final Map<DateTime, List<SheduledTrainSample>> trains;
+  CalendarPageState({required this.pickDateModel, required this.trains});
 }
 
 class LoadedCalendarPageState extends CalendarPageState {
-  final Map<DateTime, List<SheduledTrainSample>> trains;
-  LoadedCalendarPageState({required this.trains, required super.pickDateModel});
+  LoadedCalendarPageState(
+      {required super.trains, required super.pickDateModel});
 }
 
 class StartReloadCalendarPageState extends CalendarPageState {
-  final Map<DateTime, List<SheduledTrainSample>> prevTrains;
   StartReloadCalendarPageState(
-      {required this.prevTrains, required super.pickDateModel});
+      {required super.trains, required super.pickDateModel});
 }
 
 class TrainsByDateCalendarPageState extends CalendarPageState {
-  TrainsByDateCalendarPageState({required super.pickDateModel});
+  TrainsByDateCalendarPageState({required super.pickDateModel})
+      : super(trains: {});
 }
 
 class FinishReloadCalendarPageState extends CalendarPageState {
-  final Map<DateTime, List<SheduledTrainSample>> trains;
   FinishReloadCalendarPageState(
-      {required this.trains, required super.pickDateModel});
+      {required super.trains, required super.pickDateModel});
 }
 
 class CalendarPageStateNotifier extends StateNotifier<CalendarPageState> {
@@ -47,8 +45,8 @@ class CalendarPageStateNotifier extends StateNotifier<CalendarPageState> {
   void startReload(
       {required Map<DateTime, List<SheduledTrainSample>> prevTrains,
       required PickDateModel model}) {
-    state = StartReloadCalendarPageState(
-        prevTrains: prevTrains, pickDateModel: model);
+    state =
+        StartReloadCalendarPageState(trains: prevTrains, pickDateModel: model);
   }
 
   void finishReload(
@@ -62,6 +60,6 @@ class CalendarPageStateNotifier extends StateNotifier<CalendarPageState> {
   }
 }
 
-final calendarPageStateNotifierProvider =
-    StateNotifierProvider<CalendarPageStateNotifier, CalendarPageState>(
-        (ref) => CalendarPageStateNotifier());
+final calendarPageStateNotifierProvider = StateNotifierProvider.autoDispose<
+    CalendarPageStateNotifier,
+    CalendarPageState>((ref) => CalendarPageStateNotifier());

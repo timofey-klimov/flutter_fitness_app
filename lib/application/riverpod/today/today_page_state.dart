@@ -2,28 +2,32 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:app/domain/models/sheduled_train_sample.dart';
 
-abstract class TodayPageState {}
+abstract class TodayPageState {
+  final List<SheduledTrainSample> trains;
+  TodayPageState({
+    required this.trains,
+  });
+}
 
-class EmptyState extends TodayPageState {}
+class EmptyState extends TodayPageState {
+  EmptyState() : super(trains: []);
+}
 
 class TodayPageLoadedState extends TodayPageState {
-  final List<SheduledTrainSample> trains;
   TodayPageLoadedState({
-    required this.trains,
+    required super.trains,
   });
 }
 
 class TodayPageStartReloadState extends TodayPageState {
-  final List<SheduledTrainSample> trains;
   TodayPageStartReloadState({
-    required this.trains,
+    required super.trains,
   });
 }
 
 class TodayPageFinishReloadState extends TodayPageState {
-  final List<SheduledTrainSample> trains;
   TodayPageFinishReloadState({
-    required this.trains,
+    required super.trains,
   });
 }
 

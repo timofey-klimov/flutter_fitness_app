@@ -9,8 +9,8 @@ final resheduleTodayTrainProvider = Provider.autoDispose
   await Future.delayed(const Duration(milliseconds: 300));
   final notifier = ref.read(todayPageStateProvider.notifier);
   final state = ref.read(todayPageStateProvider);
-  if (state is TodayPageLoadedState) {
-    notifier.startReload(state.trains);
+  if (state is TodayPageLoadedState || state is TodayPageFinishReloadState) {
+    notifier.startReload(state.trains!);
     final resheduleUseCase = ref.read(resheduleTodayTrainUseCaseProvider);
     await resheduleUseCase(request);
     final getTrainsUseCase = ref.read(getTodayTrainsUseCaseProvider);

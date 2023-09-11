@@ -73,14 +73,12 @@ class CollapsedTrainCardWidget extends StatelessWidget {
                             }
                             if (result == TrainCardAction.reschedule) {
                               final today = DateTime.now();
-                              final tomorow = DateTime(
-                                  today.year, today.month, today.day + 1);
                               final lastDay = DateTime(
                                   today.year, today.month + 1, today.day);
                               final newDate = await showDatePicker(
                                   context: context,
-                                  initialDate: tomorow,
-                                  firstDate: tomorow,
+                                  initialDate: today,
+                                  firstDate: today,
                                   lastDate: lastDay);
                               if (newDate != null) {
                                 ref.watch(

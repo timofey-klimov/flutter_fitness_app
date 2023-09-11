@@ -23,7 +23,7 @@ class CalendarPage extends StatelessWidget {
         final notifier = ref.read(calendarPageStateNotifierProvider.notifier);
         if (state is StartReloadCalendarPageState) {
           return ReloadingWidget(
-            trains: state.prevTrains,
+            trains: state.trains,
             pickDate: state.pickDateModel,
             onUpdate: (pickModel) => notifier.reloadDate(model: pickModel),
           );

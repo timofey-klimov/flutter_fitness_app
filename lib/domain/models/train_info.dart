@@ -7,18 +7,12 @@ enum TrainScheduleTypes { one_time, every_week }
 
 class TrainInfo extends Equatable {
   final String? id;
-  final String sample_id;
   final TrainScheduleTypes shedule_type;
   final TrainSample? sample;
-  const TrainInfo(
-      {this.id,
-      required this.sample_id,
-      required this.shedule_type,
-      this.sample});
+  const TrainInfo({this.id, required this.shedule_type, this.sample});
 
   Map<String, dynamic> toMap() {
     return {
-      'sample_id': sample_id,
       'shedule_type': shedule_type.toString(),
     };
   }
@@ -26,10 +20,9 @@ class TrainInfo extends Equatable {
   factory TrainInfo.fromMap(Map<String, dynamic> map) {
     return TrainInfo(
       id: map['id'],
-      sample_id: map['sample_id'] ?? '',
       shedule_type: createSheduleType(map['schedule_type']),
       sample: map['train_samples'] != null
-          ? TrainSample.fromMap(jsonDecode(map['train_samples']['sample']))
+          ? TrainSample.fromMap(jsonDecode(map['train_samples'][0]['sample']))
           : null,
     );
   }
