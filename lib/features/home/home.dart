@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   selectedIconTheme: IconThemeData(color: AppColors.white),
                   selectedItemColor: Colors.white,
                   onTap: (value) {
-                    HapticFeedback.lightImpact();
+                    HapticFeedback.selectionClick();
                     pageStateNotifier.toPage(
                         value, PageChangeEventType.FromNavigation);
                   },
