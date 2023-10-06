@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:app/shared/color.dart';
 import 'package:app/shared/extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class TrainTimerController extends ChangeNotifier {
@@ -34,6 +35,8 @@ class TrainTimerController extends ChangeNotifier {
           timer.cancel();
           _initial = true;
           _animationController?.reverse();
+          _isPause = true;
+          _currentMilliSeconds = _total;
         }
       });
     } else {
@@ -58,6 +61,9 @@ class TrainTimer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = context.watch<TrainTimerController>();
+    final time = DateTime(0).add(
+        Duration(seconds: (controller.currentMilliSeconds! / 1000).ceil()));
+    final formatTime = DateFormat('mm:ss').format(time);
     return AnimatedSwitcher(
       duration: 300.ms,
       child: controller.initial
@@ -66,12 +72,11 @@ class TrainTimer extends StatelessWidget {
               painter: TimerPolygon(
                   total: controller.total!,
                   current: controller.currentMilliSeconds!),
-              child: Container(
-                child: Center(
-                    child: Text(
-                  (controller.currentMilliSeconds! / 1000).ceil().toString(),
+              child: Center(
+                child: Text(
+                  formatTime,
                   style: const TextStyle(fontSize: 50),
-                )),
+                ),
               ),
             ),
     );
@@ -82,11 +87,13 @@ class InitialTimer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = context.read<TrainTimerController>();
+    final time = DateTime(0).add(Duration(milliseconds: controller.total!));
+    final formatTime = DateFormat('mm:ss').format(time);
     return CustomPaint(
       painter: const TimerPolygon(current: 0, total: 1),
       child: Center(
         child: Text(
-          (controller.total! / 1000).ceil().toString(),
+          formatTime,
           style: const TextStyle(fontSize: 50),
         ),
       ),
