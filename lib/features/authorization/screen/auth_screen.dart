@@ -1,10 +1,11 @@
+import 'package:app/features/authorization/bloc/auth_form/auth_form_bloc.dart';
+import 'package:app/features/authorization/bloc/auth_form/auth_form_event.dart';
+import 'package:app/features/authorization/bloc/auth_form/auth_form_state.dart';
+import 'package:app/features/authorization/widgets/sign_in.dart';
+import 'package:app/features/authorization/widgets/sign_up.dart';
 import 'package:app/shared/color.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../providers/auth_scroll_provider.dart';
-import '../providers/auth_form_state.dart';
-import '../widgets/sign_in.dart';
-import '../widgets/sign_up.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -21,20 +22,17 @@ class _AuthScreenState extends State<AuthScreen>
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Consumer(builder: (context, ref, child) {
-          final scrollController = ref.watch(authScrollProvider);
+        body: BlocBuilder<AuthFormBloc, AuthFormState>(
+            builder: (context, state) {
           return SingleChildScrollView(
-            controller: scrollController,
             child: Container(
               color: AppColors.white,
               child: Column(
                 children: [
-                  Container(
-                    child: Image(
-                      height: MediaQuery.of(context).size.height * 0.3,
-                      fit: BoxFit.cover,
-                      image: const AssetImage('lib/assets/auth_header_png.png'),
-                    ),
+                  Image(
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    fit: BoxFit.cover,
+                    image: const AssetImage('lib/assets/auth_header_png.png'),
                   ),
                   Center(
                     child: Icon(
@@ -46,31 +44,25 @@ class _AuthScreenState extends State<AuthScreen>
                   const SizedBox(
                     height: 30,
                   ),
-                  Consumer(
-                    builder: (context, ref, child) {
-                      final formType = ref.watch(
-                          authFormStateProvider.select((value) => value.form));
-                      return AnimatedSwitcher(
-                        transitionBuilder: (child, animation) {
-                          final slideAnimation = Tween<Offset>(
-                                  begin: const Offset(0, 1),
-                                  end: const Offset(0, 0))
-                              .animate(animation);
-                          return SlideTransition(
-                            position: slideAnimation,
-                            child: child,
-                          );
-                        },
-                        duration: const Duration(milliseconds: 500),
-                        child: formType == FormType.SignIn
-                            ? const SignInWidget(
-                                key: ValueKey('SignIn'),
-                              )
-                            : SignUpWidget(
-                                key: const ValueKey('SignUp'),
-                              ),
+                  AnimatedSwitcher(
+                    transitionBuilder: (child, animation) {
+                      final slideAnimation = Tween<Offset>(
+                              begin: const Offset(0, 1),
+                              end: const Offset(0, 0))
+                          .animate(animation);
+                      return SlideTransition(
+                        position: slideAnimation,
+                        child: child,
                       );
                     },
+                    duration: const Duration(milliseconds: 500),
+                    child: state.status == Status.signIn
+                        ? const SignInWidget(
+                            key: ValueKey('SignIn'),
+                          )
+                        : SignUpWidget(
+                            key: const ValueKey('SignUp'),
+                          ),
                   )
                 ],
               ),

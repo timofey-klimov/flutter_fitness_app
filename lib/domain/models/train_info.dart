@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:app/domain/models/train_sample.dart';
 import 'package:equatable/equatable.dart';
 
+
+///Obsolete
 enum TrainScheduleTypes { one_time, every_week }
 
 class TrainInfo extends Equatable {
@@ -22,7 +24,7 @@ class TrainInfo extends Equatable {
       id: map['id'],
       shedule_type: createSheduleType(map['schedule_type']),
       sample: map['train_samples'] != null
-          ? TrainSample.fromMap(jsonDecode(map['train_samples'][0]['sample']))
+          ? TrainSample.fromMap(map['train_samples'][0])
           : null,
     );
   }

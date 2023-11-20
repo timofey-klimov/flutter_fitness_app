@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:app/domain/models/train_sample.dart';
 import 'package:equatable/equatable.dart';
 
+
+///Obsolete
 enum TrainResultStatus { finished, removed }
 
 class TrainResult extends Equatable {

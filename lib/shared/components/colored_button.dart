@@ -10,6 +10,7 @@ class ColoredButton extends StatelessWidget {
   final double height;
   final bool? isDisabled;
   final double? fontSize;
+  final bool? isLoading;
   ColoredButton(
       {this.buttonColor,
       this.textColor,
@@ -18,6 +19,7 @@ class ColoredButton extends StatelessWidget {
       required this.onpressed,
       this.fontSize,
       this.isDisabled,
+      this.isLoading,
       required String this.text}) {
     buttonColor = buttonColor ?? AppColors.main;
     textColor = textColor ?? AppColors.white;
@@ -30,7 +32,6 @@ class ColoredButton extends StatelessWidget {
       height: height,
       child: TextButton(
         onPressed: isDisabled == true ? null : onpressed,
-        child: Text(text),
         style: TextButton.styleFrom(
             foregroundColor:
                 isDisabled == true ? textColor!.withOpacity(.5) : textColor,
@@ -39,6 +40,7 @@ class ColoredButton extends StatelessWidget {
             elevation: 10,
             textStyle:
                 TextStyle(color: AppColors.white, fontSize: fontSize ?? 20)),
+        child: isLoading == true ? SizedBox(height: 15, width: 15, child: CircularProgressIndicator(color: AppColors.white, strokeWidth: 2,)) : Text(text),
       ),
     );
   }

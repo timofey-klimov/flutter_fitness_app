@@ -1,3 +1,4 @@
+import 'package:app/domain/models/train_sample.dart';
 import 'package:flutter/material.dart';
 
 class ListState {
@@ -16,6 +17,8 @@ class ListState {
 
   factory ListState.initial() => ListState(count: 0, isNewElement: false);
 
+  factory ListState.fromTrain(TrainSample sample) => ListState(count: sample.sample.length);
+
   ListState removeItem(int index, Widget widget) => ListState(
       count: --count,
       isRemoving: true,
@@ -29,4 +32,6 @@ class ListState {
       isRemoving: false,
       removedIndex: removedIndex,
       removeWidget: removeWidget);
+
+  
 }

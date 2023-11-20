@@ -1,14 +1,18 @@
+import 'package:app/application/repository/authentication_repository.dart';
+import 'package:app/bloc_observer.dart';
+import 'package:app/features/authorization/bloc/auth_form/auth_form_bloc.dart';
+import 'package:app/features/authorization/bloc/authentication/authentication_bloc.dart';
+import 'package:app/features/authorization/bloc/authentication/authentication_event.dart';
+import 'package:app/features/authorization/bloc/authentication/authentication_state.dart';
 import 'package:app/features/authorization/screen/auth_screen.dart';
 import 'package:app/features/home/home.dart';
 import 'package:app/firebase_options.dart';
-import 'package:app/provider_logger.dart';
 import 'package:app/routes.dart';
-import 'package:app/shared/auth_provider.dart';
-import 'package:app/shared/components/spinner.dart';
+import 'package:app/service_locator.dart';
 import 'package:app/supabase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -17,12 +21,16 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final opts = SupaBaseOpts.supabaseOpts;
   await Supabase.initialize(url: opts.url, anonKey: opts.key);
-  runApp(
-    ProviderScope(
-      observers: [Logger()],
-      child: const MyApp(),
-    ),
-  );
+  await setup();
+  Bloc.observer = AppBlocObserver();
+  runApp(MultiBlocProvider(providers: [
+    BlocProvider(
+        create: (context) => getIt<AuthenticationBloc>()
+          ..add(AuthenticationStarted())),
+    BlocProvider(
+      create: (context) => getIt<AuthFormBloc>(),
+    )
+  ], child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -31,32 +39,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        Locale('ru', 'RU'),
-      ],
-      routes: routes,
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(useMaterial3: true),
-      home: Consumer(
-        builder: (context, ref, child) {
-          var result = ref.watch(firebaseUserProvider);
-          return result.when(
-            data: (user) {
-              if (user != null) {
-                return const HomeScreen();
-              } else {
-                return const AuthScreen();
-              }
-            },
-            error: (s, e) => Container(),
-            loading: () => const Spinner(),
-          );
-        },
-      ),
-    );
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('ru', 'RU'),
+        ],
+        routes: routes,
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(useMaterial3: true),
+        home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+          builder: (context, state) {
+            if (state is AuthenticationSuccess) {
+              return HomeScreen();
+            } else {
+              return AuthScreen();
+            }
+          },
+        ));
   }
 }

@@ -1,17 +1,25 @@
-import 'package:app/features/authorization/providers/auth_provider.dart';
+import 'package:app/features/authorization/bloc/auth_form/auth_form_bloc.dart';
+import 'package:app/features/authorization/bloc/auth_form/auth_form_event.dart';
+import 'package:app/features/authorization/bloc/auth_form/auth_form_state.dart';
+import 'package:app/shared/debounce.dart';
+import 'package:app/shared/extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../shared/color.dart';
 import '../../../shared/components/colored_button.dart';
-import '../providers/auth_scroll_provider.dart';
-import '../providers/auth_form_state.dart';
 import 'auth_input.dart';
 
-class SignUpWidget extends StatelessWidget {
+class SignUpWidget extends StatefulWidget {
   SignUpWidget({super.key});
 
-  final formKey = GlobalKey<FormState>();
+  @override
+  State<SignUpWidget> createState() => _SignUpWidgetState();
+}
+
+class _SignUpWidgetState extends State<SignUpWidget> {
+  final emailDebounce = Debounce(duration: 300.ms);
+  final passwordDebounce = Debounce(duration: 300.ms);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,105 +40,88 @@ class SignUpWidget extends StatelessWidget {
   Widget _form(BuildContext context) {
     final inputWidth = MediaQuery.of(context).size.width * 0.8;
     const double height = 55;
-    final _emailController = TextEditingController();
-    final _passwordController = TextEditingController();
-    return Form(
-      key: formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          AuthFormInput(
-            validator: (value) {
-              if (value == null || value == "") {
-                return 'Обязательное поле';
-              }
-              return null;
-            },
-            controller: _emailController,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        BlocBuilder<AuthFormBloc, AuthFormState>(builder: (context, state) {
+          return AuthFormInput(
+            initialValue: state.email,
             width: inputWidth,
             hintText: 'Email',
             height: height,
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Consumer(builder: (context, ref, child) {
-            final provider = ref.read(authScrollProvider);
-            return AuthFormInput(
-              validator: (value) {
-                if (value == null || value == "") {
-                  return "Обязательное поле";
-                }
-                return null;
-              },
-              controller: _passwordController,
-              height: height,
-              width: inputWidth,
-              hintText: 'Пароль',
-              obscure: true,
-              onFieldSubmitted: (newValue) {
-                provider.animateTo(0,
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeIn);
-              },
-            );
-          }),
-          const SizedBox(
-            height: 10,
-          ),
-          Consumer(
-            builder: (ctx, ref, child) {
-              final errorMessage = ref.watch(
-                  authFormStateProvider.select((value) => value.errorText));
-              if (errorMessage != null) {
-                return Text(
-                  errorMessage,
-                  style: const TextStyle(color: Colors.red, fontSize: 16),
-                );
-              }
-              return Container();
+            onFieldSubmitted: (newValue) {
+              context.read<AuthFormBloc>().add(EmailChanged(email: newValue));
             },
-          ),
-          Consumer(
-            builder: (context, ref, child) {
-              final provider = ref.read(authFormStateProvider.notifier);
-              return TextButton(
-                onPressed: () {
-                  provider.openSignInForm();
-                },
-                child: Text(
-                  'Уже есть аккаунт',
-                  style: TextStyle(fontSize: 20, color: AppColors.main),
-                ),
+            onChanged: (newValue) {
+              emailDebounce.run(() {
+                context.read<AuthFormBloc>().add(EmailChanged(email: newValue));
+              });
+            },
+          );
+        }),
+        const SizedBox(
+          height: 20,
+        ),
+        BlocBuilder<AuthFormBloc, AuthFormState>(builder: (context, state) {
+          return AuthFormInput(
+            initialValue: state.password,
+            onChanged: (newValue) {
+              passwordDebounce.run(() {
+                context.read<AuthFormBloc>().add(PasswordChanged(password: newValue));
+              });
+            },
+            height: height,
+            width: inputWidth,
+            hintText: 'Пароль',
+            obscure: true,
+            onFieldSubmitted: (newValue) {
+              context
+                  .read<AuthFormBloc>()
+                  .add(PasswordChanged(password: newValue));
+            },
+          );
+        }),
+        const SizedBox(
+          height: 10,
+        ),
+        BlocBuilder<AuthFormBloc, AuthFormState>(
+          builder: (context, state) {
+            final errorMessage = state.errorMessage;
+            if (errorMessage != null) {
+              return Text(
+                errorMessage,
+                style: const TextStyle(color: Colors.red, fontSize: 16),
               );
+            }
+            return Container();
+          },
+          buildWhen: (previous, current) =>
+              previous.errorMessage != current.errorMessage,
+        ),
+        TextButton(
+          onPressed: () {
+            context.read<AuthFormBloc>().add(ChangeForm(status: Status.signIn));
+          },
+          child: Text(
+            'Уже есть аккаунт',
+            style: TextStyle(fontSize: 20, color: AppColors.main),
+          ),
+        ),
+        const SizedBox(
+          height: 30,
+        ),
+        BlocBuilder<AuthFormBloc, AuthFormState>(builder: (context, state) {
+          return ColoredButton(
+            width: MediaQuery.of(context).size.width * 0.5,
+            height: height,
+            isLoading: state.isLoading,
+            onpressed: () {
+              context.read<AuthFormBloc>().add(FormSubmitted());
             },
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          Consumer(
-            builder: (context, ref, child) {
-              return ColoredButton(
-                width: MediaQuery.of(context).size.width * 0.5,
-                height: height,
-                onpressed: () {
-                  if (formKey.currentState!.validate()) {
-                    ref.read(
-                      signUpProvider(
-                        SignUpRequest(
-                            email: _emailController.text,
-                            password: _passwordController.text),
-                      ),
-                    );
-                    ref.invalidate(signUpProvider);
-                  }
-                },
-                text: 'Создать',
-              );
-            },
-          ),
-        ],
-      ),
+            text: 'Создать',
+          );
+        }),
+      ],
     );
   }
 }

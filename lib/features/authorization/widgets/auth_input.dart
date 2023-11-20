@@ -7,15 +7,17 @@ class AuthFormInput extends StatelessWidget {
   final double width;
   final double height;
   final void Function(String newValue)? onFieldSubmitted;
-  final TextEditingController controller;
+  final void Function(String newValue)? onChanged;
+  final String? initialValue;
   final String? Function(String? value)? validator;
   const AuthFormInput(
       {required this.hintText,
       required this.width,
       required this.height,
-      required this.controller,
+      this.initialValue,
       this.validator,
       this.onFieldSubmitted,
+      this.onChanged,
       this.obscure = false});
 
   @override
@@ -23,11 +25,14 @@ class AuthFormInput extends StatelessWidget {
     return SizedBox(
       width: width,
       child: TextFormField(
+        onChanged: (value) {
+          onChanged?.call(value);
+        },
+        initialValue: initialValue,
         autovalidateMode: AutovalidateMode.disabled,
         validator: (value) {
           return validator?.call(value);
         },
-        controller: controller,
         onFieldSubmitted: (value) {
           onFieldSubmitted?.call(value);
         },

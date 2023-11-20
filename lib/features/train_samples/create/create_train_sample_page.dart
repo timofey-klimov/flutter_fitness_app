@@ -1,20 +1,17 @@
-import 'package:app/domain/models/train_info.dart';
-import 'package:app/features/shared/models/bottom_menu_model.dart';
+import 'package:app/domain/models/train_sample.dart';
 import 'package:app/features/train_samples/create/create_train_header_widget.dart';
 import 'package:app/features/train_samples/create/submit_button_widget.dart';
-import 'package:app/shared/auth_provider.dart';
 import 'package:app/shared/components/spinner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:app/application/services/train_samples_state.dart';
-import '../../../application/riverpod/train_samples/create_train_sample_provider.dart';
-import '../../../application/usecases/train_samples/create_train_sample_use_case.dart';
 import '../../../application/services/exercise_widgets/exercise_card.dart';
 import '../../../shared/color.dart';
 import '../../../shared/model/list_state.dart';
 
 class CreateTrainSamplePage extends StatefulWidget {
-  const CreateTrainSamplePage({super.key});
+  final TrainSample? trainSample;
+  const CreateTrainSamplePage({super.key, required this.trainSample});
 
   @override
   State<CreateTrainSamplePage> createState() => _CreateTrainSamplePageState();
@@ -28,7 +25,7 @@ class _CreateTrainSamplePageState extends State<CreateTrainSamplePage> {
 
   @override
   void initState() {
-    _listState = ListState.initial();
+    _listState = widget.trainSample == null ? ListState.initial() : ListState.fromTrain(widget.trainSample!);
     super.initState();
   }
 
@@ -46,18 +43,19 @@ class _CreateTrainSamplePageState extends State<CreateTrainSamplePage> {
         body: isSubmitting
             ? Consumer(builder: (ctx, ref, child) {
                 final state = ref.read(trainSampleStateProvider);
-                final user = ref.read(appUserProvider);
-                ref.listen(
-                    createTrainSampleProvider(
-                        CreateTrainSampleRequest(user: user, state: state)),
-                    (prev, next) {
-                  if (next.hasError) {
-                    Navigator.of(context).pushNamed('/home');
-                  }
-                  if (next.hasValue) {
-                    Navigator.of(context).pushNamed('/home');
-                  }
-                });
+                // final user = ref.read(appUserProvider);
+             
+                  // ref.listen(
+                  //     createTrainSampleProvider(
+                  //         CreateTrainSampleRequest(user: user, state: state)),
+                  //     (prev, next) {
+                  //   if (next.hasError) {
+                  //     Navigator.of(context).pushNamed('/home');
+                  //   }
+                  //   if (next.hasValue) {
+                  //     Navigator.of(context).pushNamed('/home');
+                  //   }
+                  // });
                 return const Center(
                   child: Spinner(),
                 );

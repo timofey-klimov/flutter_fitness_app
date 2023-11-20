@@ -24,12 +24,14 @@ class _ExerciseNameWidgetState extends State<ExerciseNameWidget> {
       child: Consumer(
         builder: (context, ref, child) {
           final notifier = ref.read(trainSampleStateProvider.notifier);
+          final state = ref.watch(trainSampleStateProvider);
           return TextFormField(
             onChanged: (value) {
               debounce.run(() {
                 notifier.updateTrainName(value);
               });
             },
+            initialValue: state.name,
             inputFormatters: [LengthLimitingTextInputFormatter(20)],
             style: TextStyle(
                 decorationThickness: 0,

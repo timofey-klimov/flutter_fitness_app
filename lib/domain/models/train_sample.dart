@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import '../exercises/exercise.dart';
 import '../../application/services/factory/create_exercise_service.dart';
 
+///Obsolete
 class TrainSample extends Equatable {
   final String? id;
   final String name;
@@ -26,11 +27,12 @@ class TrainSample extends Equatable {
   }
 
   factory TrainSample.fromMap(Map<String, dynamic> map) {
+    var sample = jsonDecode(map['sample']);
     return TrainSample(
-      name: map['name'],
+      name: sample['name'],
       id: map['id'],
       train_info_id: 'train_info_id',
-      sample: List<Exercise>.from((map['sample'] as List)
+      sample: List<Exercise>.from((sample['sample'] as List)
           .map((item) => ExerciseFactory.createExercise(item))),
     );
   }

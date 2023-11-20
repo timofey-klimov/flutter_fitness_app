@@ -44,17 +44,26 @@ class SubmitButtonWidget extends StatelessWidget {
                     height: 70,
                     child: Consumer(
                       builder: (context, ref, child) {
+                        final state = ref.watch(trainSampleStateProvider);
                         return IconButton(
                           onPressed: () async {
-                            var result = await showModalBottomSheet<
-                                    TrainShedulePickResult>(
-                                context: context,
-                                builder: (ctx) => ChooseTrainDateWidget());
-                            if (result != null) {
+                            if (state.isEditing == true) {
                               isSubmitting();
                               ref
                                   .read(trainSampleStateProvider.notifier)
-                                  .submitTrain(result.date, result.type);
+                                  .submitEditing();
+                            } else {
+                              var result = await showModalBottomSheet<
+                                      TrainShedulePickResult>(
+                                  context: context,
+                                  builder: (ctx) => ChooseTrainDateWidget());
+                              if (result != null) {
+                                isSubmitting();
+                                ref
+                                    .read(trainSampleStateProvider.notifier)
+                                    .submitTrain(result.date, result.type);
+                              }
+
                             }
                           },
                           icon: const Icon(Icons.check),

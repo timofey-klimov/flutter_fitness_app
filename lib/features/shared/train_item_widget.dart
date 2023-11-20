@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:app/domain/models/sheduled_train_sample.dart';
+import 'package:app/features/shared/collapsed_train_card_widget.dart';
 import 'package:app/features/shared/expanded_train_card_widget.dart';
 import 'package:app/features/shared/item_indicator.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,6 @@ import 'package:intl/intl.dart';
 import 'package:app/shared/color.dart';
 
 import '../../../domain/models/train_sample.dart';
-import 'collapsed_train_card_widget.dart';
 
 class TrainsItem extends StatefulWidget {
   final DateTime date;
