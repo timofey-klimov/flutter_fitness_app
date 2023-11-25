@@ -1,17 +1,11 @@
-import 'dart:ui';
 import 'package:app/features/history/bloc/history_bloc.dart';
 import 'package:app/features/history/bloc/history_event.dart';
 import 'package:app/features/history/bloc/history_state.dart';
-import 'package:app/features/history/model/pick_date_model.dart';
 import 'package:app/features/history/widgets/range_header_widget.dart';
-import 'package:app/features/history/widgets/trains_list_widget.dart';
-import 'package:app/features/history/widgets/trains_widgets.dart';
 import 'package:app/service_locator.dart';
 import 'package:app/shared/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../domain/models/sheduled_train_sample.dart';
 import '../../shared/components/spinner.dart';
 
 class HistoryPage extends StatelessWidget {

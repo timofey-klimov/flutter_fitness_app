@@ -1,9 +1,8 @@
-import 'package:app/features/train_samples/create/return_button_widget.dart';
+import 'package:app/features/trains/widgets/header/return_button.dart';
 import 'package:flutter/material.dart';
 
-import '../../../shared/color.dart';
-import 'add_new_exercise_widget.dart';
-import 'exercise_name_widget.dart';
+import '../../../../shared/color.dart';
+import 'add_exercise_button.dart';
 
 class CreateTrainHeaderWidget extends StatelessWidget {
   const CreateTrainHeaderWidget({
@@ -23,8 +22,8 @@ class CreateTrainHeaderWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           ReturnButtomWidget(),
-          ExerciseNameWidget(),
-          AddNewExerciseWidget(onAdd: _onAdd)
+          Spacer(),
+          AddExerciseButtonWidget(onAdd: _onAdd)
         ],
       ),
     );

@@ -1,8 +1,7 @@
+import 'package:app/domain/activities/activity.dart';
 import 'package:app/domain/exercises/exercise.dart';
 import 'package:app/domain/exercises/self_weight_exercise.dart';
 import 'package:app/domain/exercises/weight_exercise.dart';
-import 'package:app/application/services/train_samples_state.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ExerciseMapper {
   Map<ExerciseTypes, String> map() {
@@ -14,8 +13,6 @@ class ExerciseMapper {
     };
   }
 }
-
-final exerciseMapperProvider = Provider((ref) => ExerciseMapper());
 
 class ExerciseFactory {
   static Exercise createExercise(Map<String, dynamic> map) {
@@ -32,14 +29,14 @@ class ExerciseFactory {
     }
   }
 
-  static Exercise createExerciseFromState(ExerciseState state) {
-    switch (state.exerciseType) {
+  static Exercise createExerciseFromState(ExerciseTypes type, Activity? activity, int index, String name) {
+    switch (type) {
       case ExerciseTypes.weight:
         return WeightExercise(
-            activity: state.activity!, index: state.index, name: state.name!);
+            activity: activity!, index: index, name: name);
       case ExerciseTypes.selfWeight:
         return SelfWeightExercise(
-            activity: state.activity!, index: state.index, name: state.name!);
+            activity: activity!, index: index, name: name);
       default:
         throw Error();
     }

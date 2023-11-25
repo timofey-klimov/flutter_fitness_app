@@ -1,4 +1,3 @@
-import 'package:app/application/repository/authentication_repository.dart';
 import 'package:app/bloc_observer.dart';
 import 'package:app/features/authorization/bloc/auth_form/auth_form_bloc.dart';
 import 'package:app/features/authorization/bloc/authentication/authentication_bloc.dart';

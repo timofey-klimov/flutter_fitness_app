@@ -1,12 +1,12 @@
-import 'package:app/application/services/train_samples_state.dart';
+import 'package:app/features/trains/bloc/train_bloc.dart';
+import 'package:app/features/trains/bloc/train_event.dart';
 import 'package:app/shared/debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:app/shared/color.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../../domain/activities/approach_activities.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../../../domain/activities/approach_activities.dart';
 
 class ApproachActivityState {
   final List<Approach> approaches;
@@ -81,68 +81,68 @@ class _ApproachActivitWidgetyState extends State<EditApproachActivityWdiget> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(
-      builder: (context, ref, child) {
-        final notifier = ref.read(trainSampleStateProvider.notifier);
-        return IntrinsicHeight(
-          child: Row(
-            children: [
-              Flexible(
-                flex: 5,
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 400),
-                  height: state.approaches.length * 62,
-                  child: AnimatedList(
-                    key: _key,
-                    initialItemCount: state.approaches.length,
-                    itemBuilder: (ctx, index, animation) {
-                      return ApproachWidget(
-                        length: state.approaches.length,
-                        approach: state.approaches[index],
-                        index: index,
-                        update: ({count, required appIndex, weight}) {
-                          setState(() {
-                            state = state.update(appIndex, count, weight);
-                          });
-                          notifier.updateActivity(widget.exerciseIndex,
-                              ApproachActivity(approaches: state.approaches));
-                        },
-                        onRemove: (index) {
-                          setState(() {
-                            state = state.remove(index);
-                          });
-                          _key.currentState!.removeItem(index,
-                              (context, animation) {
-                            return Container();
-                          });
-                          notifier.updateActivity(widget.exerciseIndex,
-                              ApproachActivity(approaches: state.approaches));
-                        },
-                      );
+    return IntrinsicHeight(
+      child: Row(
+        children: [
+          Flexible(
+            flex: 5,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 400),
+              height: state.approaches.length * 62,
+              child: AnimatedList(
+                key: _key,
+                initialItemCount: state.approaches.length,
+                itemBuilder: (ctx, index, animation) {
+                  return ApproachWidget(
+                    length: state.approaches.length,
+                    approach: state.approaches[index],
+                    index: index,
+                    update: ({count, required appIndex, weight}) {
+                      setState(() {
+                        state = state.update(appIndex, count, weight);
+                      });
+                      context.read<TrainBloc>().add(UpdateActivityEvent(
+                          activity:
+                              ApproachActivity(approaches: state.approaches),
+                          index: widget.exerciseIndex));
                     },
-                  ),
-                ),
+                    onRemove: (index) {
+                      setState(() {
+                        state = state.remove(index);
+                      });
+                      _key.currentState!.removeItem(index,
+                          (context, animation) {
+                        return Container();
+                      });
+                      context.read<TrainBloc>().add(UpdateActivityEvent(
+                          activity:
+                              ApproachActivity(approaches: state.approaches),
+                          index: widget.exerciseIndex));
+                    },
+                  );
+                },
               ),
-              Flexible(
-                flex: 7,
-                child: GestureDetector(
-                  onDoubleTap: () {
-                    setState(() {
-                      state = state.addNew();
-                    });
-                    _key.currentState!.insertItem(state.approaches.length - 1);
-                    notifier.updateActivity(widget.exerciseIndex,
-                        ApproachActivity(approaches: state.approaches));
-                  },
-                  child: Container(
-                    color: Colors.transparent,
-                  ),
-                ),
-              )
-            ],
+            ),
           ),
-        );
-      },
+          Flexible(
+            flex: 7,
+            child: GestureDetector(
+              onDoubleTap: () {
+                setState(() {
+                  state = state.addNew();
+                });
+                _key.currentState!.insertItem(state.approaches.length - 1);
+                context.read<TrainBloc>().add(UpdateActivityEvent(
+                    activity: ApproachActivity(approaches: state.approaches),
+                    index: widget.exerciseIndex));
+              },
+              child: Container(
+                color: Colors.transparent,
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

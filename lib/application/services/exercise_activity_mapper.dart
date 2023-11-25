@@ -1,8 +1,7 @@
 import 'package:app/domain/activities/activity.dart';
 import 'package:app/domain/exercises/exercise.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'factory/create_activity_service.dart';
+import 'create_activity_service.dart';
 
 class ExerciseActivityMapper {
   final Map<ExerciseTypes, List<ActivityTypes>> _map = {
@@ -27,9 +26,6 @@ class ExerciseActivityMapper {
   }
 }
 
-final exerciseActivityMapperProvider =
-    Provider((ref) => ExerciseActivityMapper());
-
 class ExerciseActivityNamesMapper {
   final ExerciseActivityMapper _exerciseActivityMapper;
   final ActivityTypesMapper _activityTypesMapper;
@@ -51,11 +47,3 @@ class ExerciseActivityNamesMapper {
     return map;
   }
 }
-
-final exerciseActivityNamesMapperProvider = Provider(
-  (ref) {
-    return ExerciseActivityNamesMapper(
-        activityTypesMapper: ref.read(activityTypesMapperProvider),
-        exerciseActivityMapper: ref.read(exerciseActivityMapperProvider));
-  },
-);

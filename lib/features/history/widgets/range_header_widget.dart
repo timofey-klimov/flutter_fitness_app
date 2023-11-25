@@ -1,4 +1,5 @@
 import 'package:app/features/history/model/pick_date_model.dart';
+import 'package:app/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -23,8 +24,9 @@ class RangeHeaderWidget extends StatelessWidget {
                   final result = await showDateRangePicker(
                       initialEntryMode: DatePickerEntryMode.calendarOnly,
                       context: context,
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime(today.year + 1));
+                      firstDate:
+                          DateTime(today.year, today.month - 1, today.day),
+                      lastDate: DateTime.now());
                   if (result == null) return;
 
                   onUpdate(pickedDate.copyWith(
@@ -36,9 +38,16 @@ class RangeHeaderWidget extends StatelessWidget {
                 ),
               ),
             ),
-            Positioned(right: 3, child: IconButton(color: AppColors.main, onPressed: () {
-
-            }, icon: const Icon(Icons.add)))
+            Positioned(
+              right: 3,
+              child: IconButton(
+                color: AppColors.main,
+                onPressed: () {
+                  Navigator.of(context).pushNamed(Routes.CreateTrainsScreen);
+                },
+                icon: const Icon(Icons.add),
+              ),
+            )
           ],
         ),
       ),

@@ -1,12 +1,11 @@
-import 'package:app/application/services/train_samples_state.dart';
+import 'package:app/features/trains/bloc/train_bloc.dart';
+import 'package:app/features/trains/bloc/train_event.dart';
 import 'package:app/shared/debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:app/shared/color.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../../domain/activities/approach_activities.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../../../domain/activities/approach_activities.dart';
 
 class WeightApproachActivityState {
   final List<WeightApproach> approaches;
@@ -84,72 +83,69 @@ class _WeightApproachActivitWidgetyState
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(
-      builder: (context, ref, child) {
-        final notifier = ref.read(trainSampleStateProvider.notifier);
-        return IntrinsicHeight(
-          child: Row(
-            children: [
-              Flexible(
-                flex: 7,
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 400),
-                  height: state.approaches.length * 62,
-                  child: AnimatedList(
-                    key: _key,
-                    initialItemCount: state.approaches.length,
-                    itemBuilder: (ctx, index, animation) {
-                      return WeightApproachWidget(
-                        length: state.approaches.length,
-                        approach: state.approaches[index],
-                        index: index,
-                        update: ({count, required appIndex, weight}) {
-                          setState(() {
-                            state = state.update(appIndex, count, weight);
-                          });
-                          notifier.updateActivity(
-                              widget.exerciseIndex,
-                              WeightApproachActivity(
-                                  approaches: state.approaches));
-                        },
-                        onRemove: (index) {
-                          setState(() {
-                            state = state.remove(index);
-                          });
-                          _key.currentState!.removeItem(index,
-                              (context, animation) {
-                            return Container();
-                          });
-                          notifier.updateActivity(
-                              widget.exerciseIndex,
-                              WeightApproachActivity(
-                                  approaches: state.approaches));
-                        },
-                      );
+    return IntrinsicHeight(
+      child: Row(
+        children: [
+          Flexible(
+            flex: 7,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 400),
+              height: state.approaches.length * 62,
+              child: AnimatedList(
+                key: _key,
+                initialItemCount: state.approaches.length,
+                itemBuilder: (ctx, index, animation) {
+                  return WeightApproachWidget(
+                    length: state.approaches.length,
+                    approach: state.approaches[index],
+                    index: index,
+                    update: ({count, required appIndex, weight}) {
+                      setState(() {
+                        state = state.update(appIndex, count, weight);
+                      });
+                      context.read<TrainBloc>().add(UpdateActivityEvent(
+                          activity: WeightApproachActivity(
+                              approaches: state.approaches),
+                          index: widget.exerciseIndex));
                     },
-                  ),
-                ),
+                    onRemove: (index) {
+                      setState(() {
+                        state = state.remove(index);
+                      });
+                      _key.currentState!.removeItem(index,
+                          (context, animation) {
+                        return Container();
+                      });
+                      context.read<TrainBloc>().add(UpdateActivityEvent(
+                          activity: WeightApproachActivity(
+                              approaches: state.approaches),
+                          index: widget.exerciseIndex));
+                    },
+                  );
+                },
               ),
-              Flexible(
-                flex: 3,
-                child: GestureDetector(
-                  onDoubleTap: () {
-                    setState(() {
-                      state = state.addNew();
-                    });
-                    _key.currentState!.insertItem(state.approaches.length - 1);
-                    notifier.updateActivity(widget.exerciseIndex,
-                        WeightApproachActivity(approaches: state.approaches));
-                  },
-                  child: Container(
-                    color: Colors.transparent,
-                  ),
-                ),
-              )
-            ],
+            ),
           ),
-        );
-      },
+          Flexible(
+            flex: 3,
+            child: GestureDetector(
+              onDoubleTap: () {
+                setState(() {
+                  state = state.addNew();
+                });
+                _key.currentState!.insertItem(state.approaches.length - 1);
+                context.read<TrainBloc>().add(UpdateActivityEvent(
+                    activity:
+                        WeightApproachActivity(approaches: state.approaches),
+                    index: widget.exerciseIndex));
+              },
+              child: Container(
+                color: Colors.transparent,
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

@@ -1,15 +1,21 @@
 import 'package:app/domain/exercises/exercise.dart';
 import 'package:app/domain/models/train_sample.dart';
+import 'package:app/service_locator.dart';
 import 'package:app/shared/extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../application/services/create_activity_service.dart';
 
-import '../../application/services/factory/create_activity_service.dart';
-
-class ExpandedTrainCardWidget extends StatelessWidget {
+class ExpandedTrainCardWidget extends StatefulWidget {
   final TrainSample trainSample;
   const ExpandedTrainCardWidget({super.key, required this.trainSample});
 
+  @override
+  State<ExpandedTrainCardWidget> createState() =>
+      _ExpandedTrainCardWidgetState();
+}
+
+class _ExpandedTrainCardWidgetState extends State<ExpandedTrainCardWidget> {
+  final drawer = getIt<CreateActivityService>();
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -23,7 +29,7 @@ class ExpandedTrainCardWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 25, left: 20),
               child: Text(
-                trainSample.name.capitalize(),
+                widget.trainSample.name.capitalize(),
                 style:
                     const TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
               ),
@@ -31,24 +37,19 @@ class ExpandedTrainCardWidget extends StatelessWidget {
             const SizedBox(
               height: 30,
             ),
-            Consumer(
-              builder: (context, ref, child) {
-                final drawer = ref.read(activityDrawerProvider);
-                return Padding(
-                  padding: const EdgeInsets.only(left: 20, bottom: 20),
-                  child: Column(
-                    children: trainSample.sample
-                        .map(
-                          (item) => ExpandExerciseWidget(
-                            exercise: item,
-                            drawer: drawer,
-                          ),
-                        )
-                        .toList(),
-                  ),
-                );
-              },
-            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20, bottom: 20),
+              child: Column(
+                children: widget.trainSample.sample
+                    .map(
+                      (item) => ExpandExerciseWidget(
+                        exercise: item,
+                        drawer: drawer,
+                      ),
+                    )
+                    .toList(),
+              ),
+            )
           ],
         ),
       ),

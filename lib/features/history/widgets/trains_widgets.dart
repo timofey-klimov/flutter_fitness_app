@@ -1,7 +1,6 @@
 import 'package:app/features/history/widgets/trains_list_widget.dart';
 import 'package:app/shared/components/spinner.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
 // class Trains extends StatelessWidget {

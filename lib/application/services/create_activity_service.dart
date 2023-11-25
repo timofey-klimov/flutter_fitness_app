@@ -1,15 +1,13 @@
-import 'package:app/application/services/activity_widgets/display/display_approach_activity.dart';
-import 'package:app/application/services/activity_widgets/display/display_timer_activity.dart';
-import 'package:app/application/services/activity_widgets/display/display_total_activity.dart';
-import 'package:app/application/services/activity_widgets/display/display_weight_approach_activity.dart';
-import 'package:app/application/services/activity_widgets/edit/edit_approach_activity.dart';
-import 'package:app/application/services/activity_widgets/edit/edit_timer_activity.dart';
-import 'package:app/application/services/activity_widgets/edit/edit_total_activity.dart';
-import 'package:app/application/services/activity_widgets/edit/edit_weight_approach_activity.dart';
+import 'package:app/features/trains/widgets/body/activity/display/display_approach_activity.dart';
+import 'package:app/features/trains/widgets/body/activity/display/display_timer_activity.dart';
+import 'package:app/features/trains/widgets/body/activity/display/display_total_activity.dart';
+import 'package:app/features/trains/widgets/body/activity/display/display_weight_approach_activity.dart';
+import 'package:app/features/trains/widgets/body/activity/edit/edit_approach_activity.dart';
+import 'package:app/features/trains/widgets/body/activity/edit/edit_timer_activity.dart';
+import 'package:app/features/trains/widgets/body/activity/edit/edit_total_activity.dart';
+import 'package:app/features/trains/widgets/body/activity/edit/edit_weight_approach_activity.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../domain/activities/activity.dart';
+import '../../domain/activities/activity.dart';
 
 class ActivityTypesMapper {
   Map<ActivityTypes, String> map() {
@@ -24,8 +22,6 @@ class ActivityTypesMapper {
   Iterable<MapEntry<ActivityTypes, String>> getEntry(ActivityTypes type) =>
       map().entries.where((element) => element.key == type);
 }
-
-final activityTypesMapperProvider = Provider((ref) => ActivityTypesMapper());
 
 ActivityTypes createActivityTypesFromString(String value) {
   for (var el in ActivityTypes.values) {
@@ -76,5 +72,3 @@ class CreateActivityService {
     }
   }
 }
-
-final activityDrawerProvider = Provider((ref) => CreateActivityService());
