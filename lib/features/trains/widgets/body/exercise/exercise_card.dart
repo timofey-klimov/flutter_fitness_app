@@ -1,4 +1,4 @@
-import 'package:app/features/trains/bloc/train_state.dart';
+import 'package:app/features/trains/bloc/state/exercise_state.dart';
 import 'package:flutter/material.dart';
 import 'completed_exercise_card.dart';
 import 'edit_exercise_card.dart';

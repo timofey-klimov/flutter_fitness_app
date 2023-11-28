@@ -10,12 +10,13 @@ class ItemIndicator extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 5),
       child: Container(
-          height: 15,
-          width: 15,
-          decoration: BoxDecoration(
-            color: isEnabled ? AppColors.main : Colors.grey,
-            shape: BoxShape.circle,
-          )),
+        height: 15,
+        width: 15,
+        decoration: BoxDecoration(
+          color: isEnabled ? AppColors.main : Colors.grey,
+          shape: BoxShape.circle,
+        ),
+      ),
     );
   }
 }

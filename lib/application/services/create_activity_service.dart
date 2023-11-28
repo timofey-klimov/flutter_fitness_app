@@ -29,27 +29,28 @@ ActivityTypes createActivityTypesFromString(String value) {
       return el;
     }
   }
-  throw new Error();
+  throw Error();
 }
 
 class CreateActivityService {
   Widget drawEditActivityForm(
-      ActivityTypes activityType, int index, Activity? activityModel) {
+      ActivityTypes activityType, int index, Activity activityModel) {
+    final activity = activityModel.type == ActivityTypes.empty ? null : activityModel;
     switch (activityType) {
       case ActivityTypes.weightApproach:
         return EditWeightApproachActivityWdiget(
           exerciseIndex: index,
-          activity: activityModel?.convert(),
+          activity: activity?.convert(),
         );
       case ActivityTypes.approach:
         return EditApproachActivityWdiget(
-            exerciseIndex: index, activity: activityModel?.convert());
+            exerciseIndex: index, activity: activity?.convert());
       case ActivityTypes.total:
         return EditTotalActivityWidget(
-            index: index, activity: activityModel?.convert());
+            index: index, activity: activity?.convert());
       case ActivityTypes.timer:
         return EditTimerActivity(
-            index: index, activity: activityModel?.convert());
+            index: index, activity: activity?.convert());
       default:
         throw Error();
     }

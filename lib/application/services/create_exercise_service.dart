@@ -25,15 +25,15 @@ class ExerciseFactory {
       case ExerciseTypes.selfWeight:
         return SelfWeightExercise.fromMap(map);
       default:
-        throw new Error();
+        throw Error();
     }
   }
 
-  static Exercise createExerciseFromState(ExerciseTypes type, Activity? activity, int index, String name) {
+  static Exercise createExerciseFromState(
+      ExerciseTypes type, Activity? activity, int index, String name) {
     switch (type) {
       case ExerciseTypes.weight:
-        return WeightExercise(
-            activity: activity!, index: index, name: name);
+        return WeightExercise(activity: activity!, index: index, name: name);
       case ExerciseTypes.selfWeight:
         return SelfWeightExercise(
             activity: activity!, index: index, name: name);
@@ -48,6 +48,6 @@ class ExerciseFactory {
         return value;
       }
     }
-    throw new Error();
+    throw Error();
   }
 }

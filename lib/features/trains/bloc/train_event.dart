@@ -49,3 +49,13 @@ class SaveExerciseEvent extends TrainEvent {
   SaveExerciseEvent({required this.index});
 }
 
+class TrainDateUpdateEvent extends TrainEvent {
+  final DateTime date;
+  TrainDateUpdateEvent({required this.date});
+}
+
+class SubmitTrainEvent extends TrainEvent {
+  final String userId;
+  SubmitTrainEvent({required this.userId});
+}
+

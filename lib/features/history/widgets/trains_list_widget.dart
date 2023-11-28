@@ -1,9 +1,9 @@
-import 'package:app/domain/models/sheduled_train_sample.dart';
+import 'package:app/domain/models/train.dart';
 import 'package:app/features/shared/train_item_widget.dart';
 import 'package:flutter/material.dart';
 
 class TrainsListWidget extends StatelessWidget {
-  final Map<DateTime, List<SheduledTrainSample>> trains;
+  final Map<DateTime, List<Train>> trains;
   const TrainsListWidget({super.key, required this.trains});
 
   @override
@@ -19,8 +19,7 @@ class TrainsListWidget extends StatelessWidget {
             itemBuilder: (ctx, index) {
               final date = trains.keys.elementAt(index);
               return TrainsItem(
-                showDate: true,
-                sheduledTrains: trains[date]!,
+                trains: trains[date]!,
                 date: date,
               );
             },

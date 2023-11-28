@@ -47,7 +47,7 @@ class RangeHeaderWidget extends StatelessWidget {
                 },
                 icon: const Icon(Icons.add),
               ),
-            )
+            ),
           ],
         ),
       ),

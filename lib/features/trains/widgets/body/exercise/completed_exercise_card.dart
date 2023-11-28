@@ -1,6 +1,6 @@
+import 'package:app/features/trains/bloc/state/exercise_state.dart';
 import 'package:app/features/trains/bloc/train_bloc.dart';
 import 'package:app/features/trains/bloc/train_event.dart';
-import 'package:app/features/trains/bloc/train_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../shared/color.dart';

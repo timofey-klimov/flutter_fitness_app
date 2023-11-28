@@ -1,7 +1,8 @@
 import 'dart:math';
-
-import 'package:app/domain/models/sheduled_train_sample.dart';
-import 'package:app/features/shared/collapsed_train_card_widget.dart';
+import 'package:app/domain/activities/activity.dart';
+import 'package:app/domain/activities/approach_activities.dart';
+import 'package:app/domain/activities/timer_activity.dart';
+import 'package:app/domain/activities/total_activity.dart';
 import 'package:app/features/shared/expanded_train_card_widget.dart';
 import 'package:app/features/shared/item_indicator.dart';
 import 'package:flutter/material.dart';
@@ -9,17 +10,15 @@ import 'package:intl/intl.dart';
 
 import 'package:app/shared/color.dart';
 
-import '../../../domain/models/train_sample.dart';
+import '../../domain/models/train.dart';
 
 class TrainsItem extends StatefulWidget {
   final DateTime date;
-  final List<SheduledTrainSample> sheduledTrains;
-  final bool showDate;
+  final List<Train> trains;
   const TrainsItem(
       {super.key,
-      required this.sheduledTrains,
-      required this.date,
-      required this.showDate});
+      required this.trains,
+      required this.date});
 
   @override
   State<TrainsItem> createState() => _TrainsItemState();
@@ -34,49 +33,30 @@ class _TrainsItemState extends State<TrainsItem> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          widget.showDate
-              ? Padding(
-                  padding: const EdgeInsets.only(bottom: 7),
-                  child: Text(
-                    DateFormat('MMMMEEEEd', 'ru').format(widget.date),
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: AppColors.main,
-                        fontWeight: FontWeight.w500),
-                  ),
-                )
-              : const SizedBox(),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 7),
+            child: Text(
+              DateFormat('MMMMEEEEd', 'ru').format(widget.date),
+              style: TextStyle(
+                  fontSize: 18,
+                  color: AppColors.main,
+                  fontWeight: FontWeight.w500),
+            ),
+          ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
-                height: _calculateInitialPageViewHeight(
-                    widget.sheduledTrains.map((e) => e.trainSample).toList()),
+                height: _calculateInitialPageViewHeight(widget.trains),
                 child: PageView(
                   onPageChanged: (value) {
                     setState(() {
                       pageIndex = value!;
                     });
                   },
-                  children: widget.sheduledTrains
+                  children: widget.trains
                       .map(
-                        (item) => CollapsedTrainCardWidget(
-                          color: AppColors.lightGreen,
-                          id: item.id,
-                          sample: item.trainSample,
-                          onExpand: (sample) async {
-                            await showDialog(
-                              context: context,
-                              builder: (ctx) {
-                                return Dialog(
-                                  backgroundColor: AppColors.lightGreen,
-                                  child: ExpandedTrainCardWidget(
-                                      trainSample: sample),
-                                );
-                              },
-                            );
-                          },
-                        ),
+                        (item) => ExpandedTrainCardWidget(train: item),
                       )
                       .toList(),
                 ),
@@ -84,14 +64,14 @@ class _TrainsItemState extends State<TrainsItem> {
               const SizedBox(
                 height: 5,
               ),
-              widget.sheduledTrains.length > 1
+              widget.trains.length > 1
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: widget.sheduledTrains
+                      children: widget.trains
                           .map(
                             (e) => ItemIndicator(
                               isEnabled:
-                                  widget.sheduledTrains.indexOf(e) == pageIndex,
+                                  widget.trains.indexOf(e) == pageIndex,
                             ),
                           )
                           .toList(),
@@ -104,12 +84,32 @@ class _TrainsItemState extends State<TrainsItem> {
     );
   }
 
-  double _calculateInitialPageViewHeight(List<TrainSample> samples) {
+  double _calculateInitialPageViewHeight(List<Train> samples) {
     if (samples.isEmpty) return 0;
     return samples.map((e) => _calculateCollapseHeight(e)).reduce(max);
   }
 
-  double _calculateCollapseHeight(TrainSample trainSample) {
-    return 130 + trainSample.sample.length * 35;
+  double _calculateCollapseHeight(Train trainSample) {
+    return 130 + trainSample.exercises.map((e) => mapActivityToHeight(e.activity)).reduce((value, element) => value + element);
+  }
+
+  double mapActivityToHeight(Activity activity) {
+    var basicHeight = 25.0;
+    if (activity is WeightApproachActivity) {
+      return basicHeight + activity.approaches.length * 20;
+    }
+
+    if (activity is ApproachActivity) {
+      return basicHeight + activity.approaches.length * 20;
+    }
+
+    if (activity is TotalActivity) {
+      return basicHeight + 20;
+    }
+    if (activity is TimerActivity) {
+      return basicHeight + 20;
+    } 
+
+    return basicHeight;
   }
 }

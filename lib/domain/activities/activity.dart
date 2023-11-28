@@ -4,7 +4,7 @@ import 'package:app/domain/activities/total_activity.dart';
 
 import '../../application/services/create_activity_service.dart';
 
-enum ActivityTypes { weightApproach, approach, total, timer }
+enum ActivityTypes { empty, weightApproach, approach, total, timer }
 
 abstract class Activity {
   static String entityKey = 'activity';
@@ -34,7 +34,7 @@ class ActivityFactory {
       case ActivityTypes.timer:
         activity = TimerActivity.fromMap(body);
       default:
-        throw new Error();
+        throw Error();
     }
 
     return activity;

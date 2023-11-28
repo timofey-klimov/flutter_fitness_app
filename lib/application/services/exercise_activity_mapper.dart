@@ -14,13 +14,19 @@ class ExerciseActivityMapper {
       ActivityTypes.approach,
       ActivityTypes.total,
       ActivityTypes.timer
+    ],
+    ExerciseTypes.cardio : <ActivityTypes>[
+      ActivityTypes.timer
+    ],
+    ExerciseTypes.stretch: <ActivityTypes>[
+      ActivityTypes.approach
     ]
   };
 
   List<ActivityTypes> getActivityTypesForExercise(ExerciseTypes exerciseType) {
     final list = _map[exerciseType];
     if (list == null) {
-      throw new Error();
+      throw Error();
     }
     return list;
   }

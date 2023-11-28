@@ -1,4 +1,4 @@
-import 'package:app/domain/models/train_sample.dart';
+import 'package:app/domain/models/train.dart';
 import 'package:flutter/material.dart';
 
 class ListState {
@@ -17,7 +17,7 @@ class ListState {
 
   factory ListState.initial() => ListState(count: 0, isNewElement: false);
 
-  factory ListState.fromTrain(TrainSample sample) => ListState(count: sample.sample.length);
+  factory ListState.fromTrain(Train train) => ListState(count: train.exercises.length);
 
   ListState removeItem(int index, Widget widget) => ListState(
       count: --count,

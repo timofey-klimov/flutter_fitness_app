@@ -1,6 +1,6 @@
+import 'package:app/features/trains/bloc/state/train_state.dart';
 import 'package:app/features/trains/bloc/train_bloc.dart';
 import 'package:app/features/trains/bloc/train_event.dart';
-import 'package:app/features/trains/bloc/train_state.dart';
 import 'package:app/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,6 +29,7 @@ class _AddExerciseButtonWidgetState extends State<AddExerciseButtonWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<TrainBloc, TrainState>(
       builder: (ctx, state) {
+        state as CreateTrainState;
         final bloc = ctx.read<TrainBloc>();
         final isDisabled =
             state.exercisesState.any((item) => item.isFormEditing);
@@ -63,7 +64,7 @@ class _AddExerciseButtonWidgetState extends State<AddExerciseButtonWidget> {
           icon: Icon(
             Icons.add,
             color:
-                isDisabled ? AppColors.white.withOpacity(.5) : AppColors.white,
+                isDisabled ? AppColors.main.withOpacity(.5) : AppColors.main,
           ),
         );
       },

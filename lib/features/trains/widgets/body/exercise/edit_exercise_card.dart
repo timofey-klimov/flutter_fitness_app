@@ -1,9 +1,9 @@
 import 'package:app/application/services/create_activity_service.dart';
 import 'package:app/features/shared/bottom_menu_widget.dart';
 import 'package:app/features/shared/models/bottom_menu_model.dart';
+import 'package:app/features/trains/bloc/state/exercise_state.dart';
 import 'package:app/features/trains/bloc/train_bloc.dart';
 import 'package:app/features/trains/bloc/train_event.dart';
-import 'package:app/features/trains/bloc/train_state.dart';
 import 'package:app/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

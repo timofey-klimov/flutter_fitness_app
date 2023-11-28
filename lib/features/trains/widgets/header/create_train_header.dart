@@ -1,7 +1,6 @@
 import 'package:app/features/trains/widgets/header/return_button.dart';
+import 'package:app/features/trains/widgets/header/train_date_picker.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../shared/color.dart';
 import 'add_exercise_button.dart';
 
 class CreateTrainHeaderWidget extends StatelessWidget {
@@ -16,13 +15,12 @@ class CreateTrainHeaderWidget extends StatelessWidget {
     return Container(
       height: 70,
       width: double.infinity,
-      color: AppColors.main,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          ReturnButtomWidget(),
-          Spacer(),
+          const ReturnButtomWidget(),
+          TrainDatePickerWidget(),
           AddExerciseButtonWidget(onAdd: _onAdd)
         ],
       ),

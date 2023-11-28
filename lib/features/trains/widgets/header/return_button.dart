@@ -15,7 +15,7 @@ class ReturnButtomWidget extends StatelessWidget {
       },
       icon: Icon(
         Icons.arrow_back,
-        color: AppColors.white,
+        color: AppColors.main,
       ),
     );
   }
