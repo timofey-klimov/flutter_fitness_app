@@ -6,6 +6,7 @@ import 'package:app/features/authorization/bloc/authentication/authentication_st
 import 'package:app/features/authorization/screen/auth_screen.dart';
 import 'package:app/features/home/home.dart';
 import 'package:app/firebase_options.dart';
+import 'package:app/logging.dart';
 import 'package:app/routes.dart';
 import 'package:app/service_locator.dart';
 import 'package:app/supabase_options.dart';
@@ -21,6 +22,11 @@ Future<void> main() async {
   final opts = SupaBaseOpts.supabaseOpts;
   await Supabase.initialize(url: opts.url, anonKey: opts.key);
   await setup();
+  await setUpLogs();
+  FlutterError.onError = (details) {
+    final exception = details.exceptionAsString;
+    logToFile('Error $exception');
+  };
   Bloc.observer = AppBlocObserver();
   runApp(MultiBlocProvider(providers: [
     BlocProvider(

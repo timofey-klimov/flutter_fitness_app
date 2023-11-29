@@ -112,10 +112,8 @@ class _CreateTrainSamplePageState extends State<CreateTrainSamplePage> {
                     ),
                     Visibility(
                       visible: isSunmitButtonVisible,
-                      child: Positioned(
-                        bottom: 0,
-                        left: 30,
-                        right: 30,
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
                         child: Container(
                           height: 50,
                           width: double.infinity,
